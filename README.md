@@ -1,5 +1,6 @@
 Publications
 ============
+[![DOI](https://zenodo.org/badge/111704113.svg)](https://zenodo.org/badge/latestdoi/111704113)
 
 This repositories contains scripts organized in folders for published projects (as of November 22, 2017). All scripts are annotated for debugging purposes - and future reference. Therefore, most scripts will be self-explanatory and this page only serves as a table of contents.
 
