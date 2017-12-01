@@ -8,16 +8,34 @@ Scripts will work within the context of a certain Linux environment, for example
 
 --------------
 
+## 2017
+
+### Smoking is associated to DNA methylation in atherosclerotic carotid lesions.
+
+[add in texts]
+
+Link to the publication:.
+
+
+### CVD loci
+
+[add in texts]
+
+Link to the publication:.
+
+
 ### CTMM: eQTL analysis in monocytes
 
 [add in texts]
 
---------------
+Link to the publication:.
+
 
 ### Meta-analysis of GWAS for serum FABP4 levels
 
 [add in texts]
 
+Link to the publication:.
 
 --------------
 
