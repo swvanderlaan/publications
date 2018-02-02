@@ -9,20 +9,22 @@ Scripts will work within the context of a certain Linux environment, for example
 
 --------------
 
-## 2017
+## 2018
 
 ### Smoking is associated to DNA methylation in atherosclerotic carotid lesions.
 
 [add in texts]
 
-Link to the publication:.
+Raw genotype and methylation data will be made available soon via EGA. For access to BiKE and STAGE data contact with the respective 'owners' should be made.
+
+Link to the publication: revision is submitted; link follows [asap].
 
 
 ### CVD loci
 
-[add in texts]
+For this I used mainly [GWASToolKit](). Some additional useful scripts I used are found in the [HerculesToolKit](). The polygenic (risk) scores were made with a script we (Jessica van Setten and I) had gotten via Eli Stahl. Raw genotype data will be made available soon via EGA.
 
-Link to the publication:.
+Link to the publication: revision is submitted; link follows [asap].
 
 
 ### CTMM: eQTL analysis in monocytes
@@ -41,7 +43,7 @@ Link to the publication:.
 --------------
 
 #### The MIT License (MIT)
-##### Copyright (c) 2017 Sander W. van der Laan | s.w.vanderlaan [at] gmail [dot] com.
+##### Copyright (c) 2017-2018 Sander W. van der Laan | s.w.vanderlaan [at] gmail [dot] com.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:   
 
