@@ -43,7 +43,14 @@ Link to the publication:.
 
 ### Smoking is associated to DNA methylation in atherosclerotic carotid lesions.
 
-[add in texts]
+For this study we performed an **E**pigenome-**W**ide **A**ssociation **S**tudy (EWAS) of DNA derived from whole-blood and carotid plaques.
+
+##### Description of scripts
+- `20180131.aems450k.meta.analysis.ewas.smoking.plaque.R`.......: Meta-analysis of EWAS on current smoking-status in Athero-Express Methylation Study 1 (AEMS450K1) and Athero-Express Methylation Study 2 (AEMS450K2).
+- `20180131.aems450k.meta.analysis.ewas.ePackYears.plaque.R`....: Meta-analysis of EWAS of number of Estimated Pack Years in AEMS450K1 and AEMS450K2. This was a sensitivity analysis.
+- `20180131.aems450k.meta.analysis.correct.eCigs.forGitHub.R`...: Re-calculation of the number of Estimated Pack Years in AEMS450K1 and AEMS450K2.
+- `20180131.aems450k1.analysis.smoking.R`.......................: EWAS on current smoking-status in the AEMS450K1.
+- `20180131.aems450k2.analysis.smoking.R`.......................: EWAS on current smoking-status in the AEMS450K2.
 
 For the mQTL analyses in the [Athero-Express](http://www.atheroexpress.nl) I developed the [fastQTLToolKit](https://github.com/swvanderlaan/fastQTLToolKit) which is using [fastQTL](https://www.ncbi.nlm.nih.gov/pubmed/26708335).
 All (raw) genotype and methylation data will be made available soon via EGA; a link is supplied above. For access to BiKE and STAGE data contact with the respective 'owners' should be made.
