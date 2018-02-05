@@ -1,7 +1,8 @@
 cat("===========================================================================================
                 META-ANALYSIS ATHERO-EXPRESS METHYLATION STUDIES 450K 1 & 2
+                         --- NUMBER OF ESTIMATED PACK YEARS ---
     
-    Version:      v2.8
+    Version:      v2.9
     
     Last update:  2018-01-31
     Written by:   Sander W. van der Laan (s.w.vanderlaan-2@umcutrecht.nl);
@@ -64,7 +65,7 @@ install.packages.auto("data.table")
 install.packages.auto("tableone")
 install.packages.auto("haven")
 # for methylation/rna data
-# install.packages.auto("RMySQL") # install this one from CRAN!
+# install.packages.auto("RMySQL")
 install.packages.auto("GenomicFeatures")
 install.packages.auto("bumphunter")
 install.packages.auto("minfi")
@@ -276,7 +277,7 @@ Today.Report = format(as.Date(as.POSIXlt(Sys.time())), "%A, %B %d, %Y")
 ### 27	midgrey				  #D7D8D7
 ### 28	very lightgrey	#ECECEC
 ### 29	white				    #FFFFFF
-### 30	black				    #000000
+### 30	black				    #000000 
 ### --------------------------------------------------------------------------------------------------------------------
 
 uithof_color = c("#FBB820","#F59D10","#E55738","#DB003F","#E35493","#D5267B",
@@ -309,10 +310,10 @@ ROOT_loc = "/Users/swvanderlaan"
 
 ### SOME VARIABLES WE NEED DOWN THE LINE
 PROJECTDATASET = "AEMS450KMETA"
-PROJECTNAME = "metasmoke"
+PROJECTNAME = "metaepackyears"
 SUBPROJECTNAME1 = "AEMS450K1"
 SUBPROJECTNAME2 = "AEMS450K2"
-EWAS_trait = "SmokerCurrent" # Phenotype
+EWAS_trait = "ePackYearsSmoking" # Phenotype
 
 INP_AE_loc = paste0(ROOT_loc, "/PLINK/_AE_Originals")
 INP_AEMS450K1_loc = paste0(INP_AE_loc, "/AEMS450K1")
@@ -362,7 +363,7 @@ load(paste0(INP_AEMS450K2_loc,"/20171229.aems450k2.BvaluesQCIMP.plaque.RData"))
 load(paste0(INP_AEMS450K2_loc,"/20171229.aems450k2.MvaluesQCIMP.plaque.RData"))
 
 cat("===========================================================================================")
-cat("\n[ META-ANALYSIS of EPIGENOME-WIDE ASSOCIATION STUDY on ",EWAS_trait," in PLAQUE in AEMS450K1 & 2 ]")
+cat(paste0("\n[ META-ANALYSIS of EPIGENOME-WIDE ASSOCIATION STUDY on ",EWAS_trait," in PLAQUE in AEMS450K1 & 2 ]"))
 # Reference: https://molepi.github.io/DNAmArray_workflow/06_EWAS.html
 
 cat("===========================================================================================")
@@ -436,11 +437,11 @@ cat("\n  - Setup the model, first covariate is the variable/phenotype of interes
 cat("  > AEMS450K1...")
 aems450k1.MvaluesQCplaqueClean <- aems450k1.MvaluesQCplaque
 dim(aems450k1.MvaluesQCplaque)
-metadata(aems450k1.MvaluesQCplaqueClean)$formula <- ~SmokerCurrent + Sample_Sex + Age + Hospital
+metadata(aems450k1.MvaluesQCplaqueClean)$formula <- ~ePackYearsSmoking + Sample_Sex + Age + Hospital
 cat("  > AEMS450K2...")
 aems450k2.MvaluesQCplaqueClean <- aems450k2.MvaluesQCplaque
 dim(aems450k2.MvaluesQCplaque)
-metadata(aems450k2.MvaluesQCplaqueClean)$formula <- ~SmokerCurrent + Sample_Sex + Age + Hospital
+metadata(aems450k2.MvaluesQCplaqueClean)$formula <- ~ePackYearsSmoking + Sample_Sex + Age + Hospital
 
 cat("\n  - Next, we extract those samples having a complete set of covariates. 
     Notice that we subset the SummarizedExperiment-object!")
@@ -493,8 +494,8 @@ dim(aems450k1.MvaluesQCplaque)  # 483731 CpGs, 485 samples
 dim(aems450k2.MvaluesQCplaque)  # 484249 CpGs, 190 samples
 # rowRanges(aems450k1.MvaluesQCplaqueClean)
 cat("  > we end up with:")
-dim(aems450k1.MvaluesQCplaqueClean)  # 443084 CpGs, 477 samples
-dim(aems450k2.MvaluesQCplaqueClean)  # 443084 CpGs, 187 samples
+dim(aems450k1.MvaluesQCplaqueClean)  # 443084 CpGs, 428 samples
+dim(aems450k2.MvaluesQCplaqueClean)  # 443084 CpGs, 167 samples
 # rowRanges(aems450k2.MvaluesQCplaqueClean)
 
 cat("\n * Run the analysis.")
@@ -652,7 +653,7 @@ aems450k.meta.pvalsph <- pval(aems450k.meta.bcpm.bh, corrected = FALSE)
 head(aems450k.meta.pvalsph[order(aems450k.meta.pvalsph[,3]),])
 aems450k.meta.zph = qnorm(aems450k.meta.pvalsph[,1]/2)
 aems450k.meta.lambdaph = round(median(aems450k.meta.zph^2)/0.4549364,3)
-cat(paste0("\n  - lambda is: [",aems450k.meta.lambdaph,"].")) #1.717
+cat(paste0("\n  - lambda is: [",aems450k.meta.lambdaph,"].")) # 0.739
 
 cat("\n * Corrected results.")
 # plaque *with* hospital
@@ -660,7 +661,7 @@ aems450k.meta.pvalsbcph <- pval(aems450k.meta.bcpm.bh, corrected = TRUE)
 head(aems450k.meta.pvalsbcph[order(aems450k.meta.pvalsbcph[,3]),])
 aems450k.meta.zbcph = qnorm(aems450k.meta.pvalsbcph[,1]/2)
 aems450k.meta.lambdabcph = round(median(aems450k.meta.zbcph^2)/0.4549364,3)
-cat(paste0("\n  - lambda is: [",aems450k.meta.lambdabcph,"].")) #1.228
+cat(paste0("\n  - lambda is: [",aems450k.meta.lambdabcph,"].")) # 1.088
 
 cat("\n * Annotating corrected results for plotting and other purposes.")
 cat("\n   - annotating...")
@@ -765,10 +766,10 @@ cat("\n* Plotting...")
 cat("\n  - QQ-plot in plaque...")
 png(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.png"),
     width = 1024, height = 800)
-pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.pdf"),
-    width = 12, height = 10, onefile = TRUE)
-postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.ps"),
-           width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+# pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.pdf"),
+#     width = 12, height = 10, onefile = TRUE)
+# postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.ps"),
+#            width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
   par(mfrow = c(1,2), oma = c(0, 0, 2, 0), mar = c(5, 6, 4, 2) + 0.1)
   qq(aems450k.meta.resultspfCGI$Pval.meta, 
      main = bquote("Uncorrected " ~ lambda == .(aems450k.meta.lambdaph)),
@@ -800,10 +801,11 @@ cat("\n  - Manhattan-plot in plaque...")
 # EEFSEC (cg19505196, p = 5.787613e-07, chr3)
 png(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.png"),
     width = 1920, height = 1080)
-pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.pdf"),
-    width = 28, height = 8, onefile = TRUE)
-postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.ps"),
-           width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+# pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.pdf"),
+#     width = 28, height = 8, onefile = TRUE)
+# postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.ps"),
+#            width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+
   par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mai = c(1, 1, 1, 0))
 
   ahrr <- aems450k.meta.resultspfCGI$CpG[grep("AHRR", aems450k.meta.resultspfCGI$SYMBOL)]
@@ -828,10 +830,10 @@ cat("\n* Plotting...")
 cat("\n  - QQ-plot in plaque...")
 png(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.replicated.png"),
     width = 1024, height = 800)
-pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.replicated.pdf"),
-    width = 12, height = 10, onefile = TRUE)
-postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.replicated.ps"),
-           width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+# pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.replicated.pdf"),
+#     width = 12, height = 10, onefile = TRUE)
+# postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.replicated.ps"),
+#            width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
   par(mfrow = c(1,2), oma = c(0, 0, 2, 0))
   qq(aems450k.meta.resultspfCGIQC$Pval.meta, 
      main = bquote("Uncorrected " ~ lambda == .(aems450k.meta.lambdaph)),
@@ -862,10 +864,10 @@ cat("\n  - Manhattan-plot in plaque...")
 
 png(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.replicated.png"),
     width = 1920, height = 1080)
-pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.replicated.pdf"),
-    width = 28, height = 8, onefile = TRUE)
-postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.replicated.ps"),
-           width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+# pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.replicated.pdf"),
+#     width = 28, height = 8, onefile = TRUE)
+# postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.replicated.ps"),
+#            width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
   par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mai = c(1, 1, 1, 0))
   
   ahrr <- aems450k.meta.resultspfCGIQC$CpG[grep("AHRR", aems450k.meta.resultspfCGIQC$SYMBOL)]
@@ -895,38 +897,85 @@ pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.TopCor.pdf")
   aems450k2.pearsonR <- signif(cor(aems450k2.x, aems450k2.y), 3)
   
   par(mfrow = c(1,2), oma = c(0, 0, 2, 0), mar = c(5, 5, 4, 0) + 0.1)
+  
+
   # AEMS450K1
-  boxplot(aems450k1.x~aems450k1.y, main = bquote(Pearson~r^2 == .(aems450k1.pearsonR)),
-          sub = "(AEMS450K1)",
-          cex.sub = 0.8,
-          xlab = "Current smoker", 
-          ylab = bquote(.(top)~" -"~italic(.(top.symbol))), 
-          plot = TRUE, notch = FALSE, outline = TRUE, 
-          names = c("no", "yes"), 
-          whisklty = 1, staplelty = 0, # no whisker-ends, but with lines
-          frame = FALSE)
-  stripchart(aems450k1.x~aems450k1.y, vertical = TRUE,
-             method = "jitter", add = TRUE, pch = 20, col = "#1290D9")
+  plot(aems450k1.x~aems450k1.y, main = bquote(Pearson~r^2 == .(aems450k1.pearsonR)),
+       sub = "(AEMS450K1)",
+       cex.sub = 0.8,
+       xlab = "ePackYearsSmoking", 
+       ylab = bquote(.(top)~" -"~italic(.(top.symbol))), 
+       pch = 20, col = "#1290D9",
+       frame = FALSE)
+  # Add fit lines
+  abline(lm(aems450k1.x~aems450k1.y), col = "#E55738") # regression line (y~x) 
+  lines(lowess(aems450k1.x,aems450k1.y), col = "#595A5C") # lowess line (x,y)
+  
   # AEMS450K2
-  boxplot(aems450k2.x~aems450k2.y, main = bquote(Pearson~r^2 == .(aems450k2.pearsonR)),
-          sub = "(AEMS450K2)",
-          cex.sub = 0.8,
-          xlab = "Current smoker", 
-          # ylab = bquote(.(top)~" methylation near "~italic(.(top.symbol))), 
-          ylab = "",
-          plot = TRUE, notch = FALSE, outline = TRUE, 
-          names = c("no", "yes"), 
-          whisklty = 1, staplelty = 0, # no whisker-ends, but with lines
-          frame = FALSE)
-  stripchart(aems450k2.x~aems450k2.y, vertical = TRUE,
-             method = "jitter", add = TRUE, pch = 20, col = "#1290D9")
+  plot(aems450k2.x~aems450k2.y, main = bquote(Pearson~r^2 == .(aems450k2.pearsonR)),
+       sub = "(AEMS450K2)",
+       cex.sub = 0.8,
+       xlab = "ePackYearsSmoking", 
+       ylab = bquote(.(top)~" -"~italic(.(top.symbol))), 
+       pch = 20, col = "#1290D9",
+       frame = FALSE)
+  # Add fit lines
+  abline(lm(aems450k1.x~aems450k1.y), col = "#E55738") # regression line (y~x) 
+  lines(lowess(aems450k1.x,aems450k1.y), col = "#595A5C") # lowess line (x,y)
+  
   mtext("Top correlated CpG", outer = TRUE, cex = 1.25)
 
 dev.off()
-rm(top.data, top.symbol, top,
+rm(top.symbol, top,
    aems450k1.x, aems450k1.y, aems450k1.pearsonR,
    aems450k2.x, aems450k2.y, aems450k2.pearsonR)
 par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mar = c(5, 4, 4, 2) + 0.1)
+
+pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.TopCor.SmokingCurrent_hits_in_ePackYearsSmoking.pdf"))
+  top.symbol = "AHRR"
+  top = "cg05575921"
+  aems450k1.x <- aems450k1.dataph[rownames(aems450k1.dataph) == top, ]
+  aems450k1.y <- aems450k1.designph[, 2]
+  aems450k1.pearsonR <- signif(cor(aems450k1.x, aems450k1.y), 3)
+  
+  aems450k2.x <- aems450k2.dataph[rownames(aems450k2.dataph) == top, ]
+  aems450k2.y <- aems450k2.designph[, 2]
+  aems450k2.pearsonR <- signif(cor(aems450k2.x, aems450k2.y), 3)
+  
+  par(mfrow = c(1,2), oma = c(0, 0, 2, 0), mar = c(5, 5, 4, 0) + 0.1)
+  
+  # AEMS450K1
+  plot(aems450k1.x~aems450k1.y, main = bquote(Pearson~r^2 == .(aems450k1.pearsonR)),
+       sub = "(AEMS450K1)",
+       cex.sub = 0.8,
+       xlab = "ePackYearsSmoking", 
+       ylab = bquote(.(top)~" -"~italic(.(top.symbol))), 
+       pch = 20, col = "#1290D9",
+       frame = FALSE)
+  # Add fit lines
+  abline(lm(aems450k1.x~aems450k1.y), col = "#E55738") # regression line (y~x) 
+  lines(lowess(aems450k1.x,aems450k1.y), col = "#595A5C") # lowess line (x,y)
+  
+  # AEMS450K2
+  plot(aems450k2.x~aems450k2.y, main = bquote(Pearson~r^2 == .(aems450k2.pearsonR)),
+       sub = "(AEMS450K2)",
+       cex.sub = 0.8,
+       xlab = "ePackYearsSmoking", 
+       ylab = bquote(.(top)~" -"~italic(.(top.symbol))), 
+       pch = 20, col = "#1290D9",
+       frame = FALSE)
+  # Add fit lines
+  abline(lm(aems450k1.x~aems450k1.y), col = "#E55738") # regression line (y~x) 
+  lines(lowess(aems450k1.x,aems450k1.y), col = "#595A5C") # lowess line (x,y)
+  
+  mtext("Top correlated CpG", outer = TRUE, cex = 1.25)
+
+dev.off()
+rm(top.symbol, top,
+   aems450k1.x, aems450k1.y, aems450k1.pearsonR,
+   aems450k2.x, aems450k2.y, aems450k2.pearsonR)
+par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mar = c(5, 4, 4, 2) + 0.1)
+
 
 pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.Top4.pdf"), paper = "a4r",
     width = 12, height = 8)
@@ -937,11 +986,16 @@ pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.Top4.pdf"), pape
   # 2   cg03991871   chr5   AHRR  2.896744e-11    4.278337e-06
   # 3   cg12806681   chr5   AHRR  5.949100e-09    5.271902e-04
   # 4   cg05284742  chr14  ITPK1  2.045460e-07    1.510517e-02
-
+  
   top.ahrr1 <- aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC$PvalCor.meta), "CpG"][1]
   top.ahrr2 <- aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC$PvalCor.meta), "CpG"][2]
   top.ahrr3 <- aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC$PvalCor.meta), "CpG"][3]
   top.itpk1 <- aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC$PvalCor.meta), "CpG"][4]
+  
+  top.symbol.ahrr1 <- aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC$PvalCor.meta), "SYMBOL"][1]
+  top.symbol.ahrr2 <- aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC$PvalCor.meta), "SYMBOL"][2]
+  top.symbol.ahrr3 <- aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC$PvalCor.meta), "SYMBOL"][3]
+  top.symbol.itpk1 <- aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC$PvalCor.meta), "SYMBOL"][4]
   
   par(mfrow = c(2,2), mar = c(5,6,4,0), oma = c(0, 0, 2, 0))
   # AHRR 1 - 3
@@ -955,55 +1009,127 @@ pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.Top4.pdf"), pape
   y.ahrr3 <- aems450k1.designph[, 2]
   pearsonR.ahrr3 <- signif(cor(x.ahrr3, y.ahrr3), 3)
   
-  boxplot(x.ahrr1~y.ahrr1, main = bquote(Pearson~r^2 == .(pearsonR.ahrr1)),
-          xlab = "Current Smoking", 
-          ylab = bquote(.(top.ahrr1)~" -"~italic("AHRR")), 
-          # ylim = c(0, 4.5),
-          plot = TRUE, notch = FALSE, outline = TRUE, 
-          cex = 1.25, cex.lab = 1.50, cex.axis = 1.50, cex.main = 2.0,
-          names = c("no", "yes"), 
-          whisklty = 1, staplelty = 0, # no whisker-ends, but with lines
-          frame = FALSE)
-  stripchart(x.ahrr1~y.ahrr1, vertical = TRUE,
-             method = "jitter", add = TRUE, pch = 20, col = "#1290D9")
-  boxplot(x.ahrr2~y.ahrr2, main = bquote(Pearson~r^2 == .(pearsonR.ahrr2)),
-          xlab = "Current Smoking", 
-          ylab = bquote(.(top.ahrr2)~" -"~italic("AHRR")),
-          # ylim = c(0, 4.5),
-          plot = TRUE, notch = FALSE, outline = TRUE, 
-          cex = 1.25, cex.lab = 1.50, cex.axis = 1.50, cex.main = 2.0,
-          names = c("no", "yes"), 
-          whisklty = 1, staplelty = 0, # no whisker-ends, but with lines
-          frame = FALSE)
-  stripchart(x.ahrr2~y.ahrr2, vertical = TRUE,
-             method = "jitter", add = TRUE, pch = 20, col = "#1290D9")
-  boxplot(x.ahrr3~y.ahrr3, main = bquote(Pearson~r^2 == .(pearsonR.ahrr3)),
-          xlab = "Current Smoking", 
-          ylab = bquote(.(top.ahrr3)~" -"~italic("AHRR")),
-          # ylim = c(0, 4.5),
-          plot = TRUE, notch = FALSE, outline = TRUE, 
-          cex = 1.25, cex.lab = 1.50, cex.axis = 1.50, cex.main = 2.0,
-          names = c("no", "yes"), 
-          whisklty = 1, staplelty = 0, # no whisker-ends, but with lines
-          frame = FALSE)
-  stripchart(x.ahrr3~y.ahrr3, vertical = TRUE,
-             method = "jitter", add = TRUE, pch = 20, col = "#1290D9")
+  plot(x.ahrr1~y.ahrr1, main = bquote(Pearson~r^2 == .(pearsonR.ahrr1)),
+       xlab = "ePackYearsSmoking", 
+       ylab = bquote(.(top.ahrr1)~" -"~italic(.(top.symbol.ahrr1))), 
+       pch = 20, col = "#1290D9",
+       frame = FALSE)
+  # Add fit lines
+  abline(lm(x.ahrr1~y.ahrr1), col = "#E55738") # regression line (y~x) 
+  lines(lowess(x.ahrr1,y.ahrr1), col = "#595A5C") # lowess line (x,y)
+  
+  plot(x.ahrr2~y.ahrr2, main = bquote(Pearson~r^2 == .(pearsonR.ahrr2)),
+       xlab = "ePackYearsSmoking", 
+       ylab = bquote(.(top.ahrr2)~" -"~italic(.(top.symbol.ahrr2))), 
+       pch = 20, col = "#1290D9",
+       frame = FALSE)
+  # Add fit lines
+  abline(lm(x.ahrr2~y.ahrr2), col = "#E55738") # regression line (y~x) 
+  lines(lowess(x.ahrr2,y.ahrr2), col = "#595A5C") # lowess line (x,y)
+  
+  plot(x.ahrr3~y.ahrr3, main = bquote(Pearson~r^2 == .(pearsonR.ahrr3)),
+       xlab = "ePackYearsSmoking", 
+       ylab = bquote(.(top.ahrr3)~" -"~italic(.(top.symbol.ahrr3))), 
+       pch = 20, col = "#1290D9",
+       frame = FALSE)
+  # Add fit lines
+  abline(lm(x.ahrr3~y.ahrr3), col = "#E55738") # regression line (y~x) 
+  lines(lowess(x.ahrr3,y.ahrr3), col = "#595A5C") # lowess line (x,y)
   
   # ITPK1
   x.itpk1 <- aems450k1.dataph[rownames(aems450k1.dataph) == top.itpk1, ]
   y.itpk1 <- aems450k1.designph[, 2]
   pearsonR.itpk1 <- signif(cor(x.itpk1, y.itpk1), 3)
-  boxplot(x.itpk1~y.itpk1, main = bquote(Pearson~r^2 == .(pearsonR.itpk1)),
-          xlab = "Current Smoking", 
-          ylab = bquote(.(top.itpk1)~" -"~italic("ITPK1")),
-          # ylim = c(0, 4.5),
-          plot = TRUE, notch = FALSE, outline = TRUE, 
-          cex = 1.25, cex.lab = 1.50, cex.axis = 1.50, cex.main = 2.0,
-          names = c("no", "yes"), 
-          whisklty = 1, staplelty = 0, # no whisker-ends, but with lines
-          frame = FALSE)
-  stripchart(x.itpk1~y.itpk1, vertical = TRUE,
-             method = "jitter", add = TRUE, pch = 20, col = "#1290D9")
+  plot(x.itpk1~y.itpk1, main = bquote(Pearson~r^2 == .(pearsonR.itpk1)),
+       xlab = "ePackYearsSmoking", 
+       ylab = bquote(.(top.itpk1)~" -"~italic(.(top.symbol.itpk1))), 
+       pch = 20, col = "#1290D9",
+       frame = FALSE)
+  # Add fit lines
+  abline(lm(x.itpk1~y.itpk1), col = "#E55738") # regression line (y~x) 
+  lines(lowess(x.itpk1,y.itpk1), col = "#595A5C") # lowess line (x,y)
+  
+  mtext("Top 4 CpGs", outer = TRUE, cex = 2.25)
+
+dev.off()
+rm(top.ahrr1,top.ahrr2,top.ahrr3,top.itpk1,
+   x.ahrr1, y.ahrr1, pearsonR.ahrr1,
+   x.ahrr2, y.ahrr2, pearsonR.ahrr2,
+   x.ahrr3, y.ahrr3, pearsonR.ahrr3,
+   x.itpk1, y.itpk1, pearsonR.itpk1)
+par(mfrow = c(1,1), mar = c(5, 4, 4, 2), oma = c(0, 0, 0, 0))
+
+pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.Top4.SmokingCurrent_hits_in_ePackYearsSmoking.pdf"), paper = "a4r",
+    width = 12, height = 8)
+  # head(aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC[,31]),], 4)
+  # example of known smoking-related CpG
+  # No. CpG       seqnames SYMBOL PvalCor.meta    PvalCorAdj.meta
+  # 1   cg05575921   chr5   AHRR  1.713638e-13    3.796429e-08
+  # 2   cg03991871   chr5   AHRR  2.896744e-11    4.278337e-06
+  # 3   cg12806681   chr5   AHRR  5.949100e-09    5.271902e-04
+  # 4   cg05284742  chr14  ITPK1  2.045460e-07    1.510517e-02
+
+  top.ahrr1 = "cg05575921"
+  top.ahrr2 = "cg03991871"
+  top.ahrr3 = "cg12806681"
+  top.itpk1 = "cg05284742"
+  
+  top.symbol.ahrr1 = "AHRR"
+  top.symbol.ahrr2 = "AHRR"
+  top.symbol.ahrr3 = "AHRR"
+  top.symbol.itpk1 = "ITPK1"
+  
+  par(mfrow = c(2,2), mar = c(5,6,4,0), oma = c(0, 0, 2, 0))
+  # AHRR 1 - 3
+  x.ahrr1 <- aems450k1.dataph[rownames(aems450k1.dataph) == top.ahrr1, ]
+  y.ahrr1 <- aems450k1.designph[, 2]
+  pearsonR.ahrr1 <- signif(cor(x.ahrr1, y.ahrr1), 3)
+  x.ahrr2 <- aems450k1.dataph[rownames(aems450k1.dataph) == top.ahrr2, ]
+  y.ahrr2 <- aems450k1.designph[, 2]
+  pearsonR.ahrr2 <- signif(cor(x.ahrr2, y.ahrr2), 3)
+  x.ahrr3 <- aems450k1.dataph[rownames(aems450k1.dataph) == top.ahrr3, ]
+  y.ahrr3 <- aems450k1.designph[, 2]
+  pearsonR.ahrr3 <- signif(cor(x.ahrr3, y.ahrr3), 3)
+  
+  plot(x.ahrr1~y.ahrr1, main = bquote(Pearson~r^2 == .(pearsonR.ahrr1)),
+       xlab = "ePackYearsSmoking", 
+       ylab = bquote(.(top.ahrr1)~" -"~italic(.(top.symbol.ahrr1))), 
+       pch = 20, col = "#1290D9",
+       frame = FALSE)
+  # Add fit lines
+  abline(lm(x.ahrr1~y.ahrr1), col = "#E55738") # regression line (y~x) 
+  lines(lowess(x.ahrr1,y.ahrr1), col = "#595A5C") # lowess line (x,y)
+  
+  plot(x.ahrr2~y.ahrr2, main = bquote(Pearson~r^2 == .(pearsonR.ahrr2)),
+       xlab = "ePackYearsSmoking", 
+       ylab = bquote(.(top.ahrr2)~" -"~italic(.(top.symbol.ahrr2))), 
+       pch = 20, col = "#1290D9",
+       frame = FALSE)
+  # Add fit lines
+  abline(lm(x.ahrr2~y.ahrr2), col = "#E55738") # regression line (y~x) 
+  lines(lowess(x.ahrr2,y.ahrr2), col = "#595A5C") # lowess line (x,y)
+  
+  plot(x.ahrr3~y.ahrr3, main = bquote(Pearson~r^2 == .(pearsonR.ahrr3)),
+       xlab = "ePackYearsSmoking", 
+       ylab = bquote(.(top.ahrr3)~" -"~italic(.(top.symbol.ahrr3))), 
+       pch = 20, col = "#1290D9",
+       frame = FALSE)
+  # Add fit lines
+  abline(lm(x.ahrr3~y.ahrr3), col = "#E55738") # regression line (y~x) 
+  lines(lowess(x.ahrr3,y.ahrr3), col = "#595A5C") # lowess line (x,y)
+  
+  # ITPK1
+  x.itpk1 <- aems450k1.dataph[rownames(aems450k1.dataph) == top.itpk1, ]
+  y.itpk1 <- aems450k1.designph[, 2]
+  pearsonR.itpk1 <- signif(cor(x.itpk1, y.itpk1), 3)
+  plot(x.itpk1~y.itpk1, main = bquote(Pearson~r^2 == .(pearsonR.itpk1)),
+       xlab = "ePackYearsSmoking", 
+       ylab = bquote(.(top.itpk1)~" -"~italic(.(top.symbol.itpk1))), 
+       pch = 20, col = "#1290D9",
+       frame = FALSE)
+  # Add fit lines
+  abline(lm(x.itpk1~y.itpk1), col = "#E55738") # regression line (y~x) 
+  lines(lowess(x.itpk1,y.itpk1), col = "#595A5C") # lowess line (x,y)
   
   mtext("Top 4 CpGs", outer = TRUE, cex = 2.25)
 
@@ -1022,17 +1148,17 @@ fwrite(aems450k.meta.resultspfCGI,
        quote = FALSE, sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
 cat("\n  - writing top 10 results...")
-fwrite(head(aems450k.meta.resultspfCGI[order(aems450k.meta.resultspfCGI[,31]),], 10), 
+fwrite(utils::head(aems450k.meta.resultspfCGI[order(aems450k.meta.resultspfCGI[,31]),], 10), 
        file = paste0(OUT_loc, "/", Today,".aems450k.meta.resultspf.top10meta.txt"),
        quote = FALSE, sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
 cat("\n  - writing top 20 discovery results...")
-fwrite(head(aems450k.meta.resultspfCGI[order(aems450k.meta.resultspfCGI[,27]),], 20), 
+fwrite(utils::head(aems450k.meta.resultspfCGI[order(aems450k.meta.resultspfCGI[,27]),], 20), 
        file = paste0(OUT_loc, "/", Today,".aems450k.meta.resultspf.top20discovery.txt"),
        quote = FALSE, sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
 cat("\n  - writing top 20 replication results...")
-fwrite(head(aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC[,31]),], 20), 
+fwrite(utils::head(aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC[,31]),], 20), 
        file = paste0(OUT_loc, "/", Today,".aems450k.meta.resultspf.top20replication.txt"),
        quote = FALSE, sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
@@ -1051,10 +1177,10 @@ rm(list.chr, aems450k.meta.resultsp, aems450k.meta.pvalsph, aems450k.meta.zph, a
    aems450k1.pvalph, aems450k2.pvalph,
    aems450k1.padjph, aems450k2.padjph, 
    aems450k1.meta.difs, aems450k2.meta.difs, aems450k.meta.intersect, 
-   aems450k1.ranges.b, aems450k1.ranges, aems450k2.ranges, 
+   aems450k1.ranges, aems450k2.ranges, 
    hm450.manifest.pop.GoNL, 
-   aems450k1.covariates.b, aems450k1.covariates, aems450k2.covariates,
-   aems450k1.nas.b, aems450k1.nas, aems450k2.nas,
+   aems450k1.covariates, aems450k2.covariates,
+   aems450k1.nas, aems450k2.nas,
    feats, chr.list, regions)
 
 cat("\n===========================================================================================")
