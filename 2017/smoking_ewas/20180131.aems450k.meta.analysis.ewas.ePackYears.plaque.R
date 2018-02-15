@@ -1,8 +1,8 @@
 cat("===========================================================================================
                 META-ANALYSIS ATHERO-EXPRESS METHYLATION STUDIES 450K 1 & 2
-                         --- NUMBER OF ESTIMATED PACK YEARS ---
+                            --- NUMBER OF ESTIMATED PACK YEARS ---
     
-    Version:      v2.9
+    Version:      v2.8
     
     Last update:  2018-01-31
     Written by:   Sander W. van der Laan (s.w.vanderlaan-2@umcutrecht.nl);
@@ -65,7 +65,7 @@ install.packages.auto("data.table")
 install.packages.auto("tableone")
 install.packages.auto("haven")
 # for methylation/rna data
-# install.packages.auto("RMySQL")
+# install.packages.auto("RMySQL") # install this one from CRAN!
 install.packages.auto("GenomicFeatures")
 install.packages.auto("bumphunter")
 install.packages.auto("minfi")
@@ -277,7 +277,7 @@ Today.Report = format(as.Date(as.POSIXlt(Sys.time())), "%A, %B %d, %Y")
 ### 27	midgrey				  #D7D8D7
 ### 28	very lightgrey	#ECECEC
 ### 29	white				    #FFFFFF
-### 30	black				    #000000 
+### 30	black				    #000000
 ### --------------------------------------------------------------------------------------------------------------------
 
 uithof_color = c("#FBB820","#F59D10","#E55738","#DB003F","#E35493","#D5267B",
@@ -363,7 +363,7 @@ load(paste0(INP_AEMS450K2_loc,"/20171229.aems450k2.BvaluesQCIMP.plaque.RData"))
 load(paste0(INP_AEMS450K2_loc,"/20171229.aems450k2.MvaluesQCIMP.plaque.RData"))
 
 cat("===========================================================================================")
-cat(paste0("\n[ META-ANALYSIS of EPIGENOME-WIDE ASSOCIATION STUDY on ",EWAS_trait," in PLAQUE in AEMS450K1 & 2 ]"))
+cat("\n[ META-ANALYSIS of EPIGENOME-WIDE ASSOCIATION STUDY on ",EWAS_trait," in PLAQUE in AEMS450K1 & 2 ]")
 # Reference: https://molepi.github.io/DNAmArray_workflow/06_EWAS.html
 
 cat("===========================================================================================")
@@ -376,7 +376,7 @@ pdf(paste0(QC_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.MethylationDensity
   densityPlot(assays(aems450k1.BvaluesQCplaque)$data, sampGroups = aems450k1.BvaluesQCplaque$SmokerCurrent, main = "Beta-values", 
               legend = FALSE, 
               xlab = "Beta-values", 
-              col = c("#9FC228", "#E55738"), 
+              pal = c("#9FC228", "#E55738"), 
               bty = "n")
   legend("topright", legend = levels(factor(aems450k1.BvaluesQCplaque$SmokerCurrent)), 
          text.col = c("#9FC228", "#E55738"), 
@@ -385,7 +385,7 @@ pdf(paste0(QC_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.MethylationDensity
   densityPlot(assays(aems450k1.MvaluesQCplaque)$data, sampGroups = aems450k1.MvaluesQCplaque$SmokerCurrent, main = "M-values", 
               legend = FALSE, 
               xlab = "M-values", 
-              col = c("#9FC228", "#E55738"), 
+              pal = c("#9FC228", "#E55738"), 
               bty = "n")
   legend("topright", legend = levels(factor(aems450k1.MvaluesQCplaque$SmokerCurrent)), 
          text.col = c("#9FC228", "#E55738"), 
@@ -402,7 +402,7 @@ pdf(paste0(QC_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.MethylationDensity
   densityPlot(assays(aems450k2.BvaluesQCplaque)$data, sampGroups = aems450k2.BvaluesQCplaque$SmokerCurrent, main = "Beta-values", 
               legend = FALSE, 
               xlab = "Beta-values", 
-              col = c("#9FC228", "#E55738"), 
+              pal = c("#9FC228", "#E55738"), 
               bty = "n")
   legend("topright", legend = levels(factor(aems450k2.BvaluesQCplaque$SmokerCurrent)), 
          text.col = c("#9FC228", "#E55738"), 
@@ -411,7 +411,7 @@ pdf(paste0(QC_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.MethylationDensity
   densityPlot(assays(aems450k2.MvaluesQCplaque)$data, sampGroups = aems450k2.MvaluesQCplaque$SmokerCurrent, main = "M-values", 
               legend = FALSE, 
               xlab = "M-values", 
-              col = c("#9FC228", "#E55738"), 
+              pal = c("#9FC228", "#E55738"), 
               bty = "n")
   legend("topright", legend = levels(factor(aems450k2.MvaluesQCplaque$SmokerCurrent)), 
          text.col = c("#9FC228", "#E55738"), 
@@ -583,7 +583,7 @@ par(mfrow = c(1,1), oma = c(0, 0, 0, 0))
 
 # actual bacon correction - run in parallel
 library(BiocParallel)
-register(MulticoreParam(8))
+register(MulticoreParam(2))
 # plaque *with* hospital
 aems450k.meta.bcp.th <- bacon(teststatistics = aems450k.meta.th, 
                               effectsizes = NULL, standarderrors = NULL,
@@ -635,7 +635,7 @@ cat("\n * Perform meta-analysis.")
 # actual meta-analysis in plaque *with* hospital
 aems450k.meta.bcpm.bh <- meta(aems450k.meta.bcp.bh)
 aems450k.meta.pvalsbcpm.bh <- pval(aems450k.meta.bcpm.bh)
-head(aems450k.meta.pvalsbcpm.bh[order(aems450k.meta.pvalsbcpm.bh[,1]),])
+head(aems450k.meta.pvalsbcpm.bh[order(aems450k.meta.pvalsbcpm.bh[,3]),])
 print(bacon::topTable(aems450k.meta.bcpm.bh))
 
 pdf(paste0(QC_loc,"/",Today,".aems450k.meta.qq.",EWAS_trait,".plaque.pdf"),
@@ -651,17 +651,17 @@ cat("\n * Uncorrected results.")
 # plaque *with* hospital
 aems450k.meta.pvalsph <- pval(aems450k.meta.bcpm.bh, corrected = FALSE)
 head(aems450k.meta.pvalsph[order(aems450k.meta.pvalsph[,3]),])
-aems450k.meta.zph = qnorm(aems450k.meta.pvalsph[,1]/2)
+aems450k.meta.zph = qnorm(aems450k.meta.pvalsph[,3]/2)
 aems450k.meta.lambdaph = round(median(aems450k.meta.zph^2)/0.4549364,3)
-cat(paste0("\n  - lambda is: [",aems450k.meta.lambdaph,"].")) # 0.739
+cat(paste0("\n  - lambda is: [",aems450k.meta.lambdaph,"].")) # 0.957
 
 cat("\n * Corrected results.")
 # plaque *with* hospital
 aems450k.meta.pvalsbcph <- pval(aems450k.meta.bcpm.bh, corrected = TRUE)
 head(aems450k.meta.pvalsbcph[order(aems450k.meta.pvalsbcph[,3]),])
-aems450k.meta.zbcph = qnorm(aems450k.meta.pvalsbcph[,1]/2)
+aems450k.meta.zbcph = qnorm(aems450k.meta.pvalsbcph[,3]/2)
 aems450k.meta.lambdabcph = round(median(aems450k.meta.zbcph^2)/0.4549364,3)
-cat(paste0("\n  - lambda is: [",aems450k.meta.lambdabcph,"].")) # 1.088
+cat(paste0("\n  - lambda is: [",aems450k.meta.lambdabcph,"].")) # 0.957
 
 cat("\n * Annotating corrected results for plotting and other purposes.")
 cat("\n   - annotating...")
@@ -766,10 +766,15 @@ cat("\n* Plotting...")
 cat("\n  - QQ-plot in plaque...")
 png(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.png"),
     width = 1024, height = 800)
-# pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.pdf"),
-#     width = 12, height = 10, onefile = TRUE)
-# postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.ps"),
-#            width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.pdf"),
+    width = 12, height = 10, onefile = TRUE)
+postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.ps"),
+           width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+tiff(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.tiff"),
+     width = 1024, height = 800, units = "px", pointsize = 12,
+     compression = "none", bg = "transparent", 
+     type = "quartz")
+
   par(mfrow = c(1,2), oma = c(0, 0, 2, 0), mar = c(5, 6, 4, 2) + 0.1)
   qq(aems450k.meta.resultspfCGI$Pval.meta, 
      main = bquote("Uncorrected " ~ lambda == .(aems450k.meta.lambdaph)),
@@ -780,7 +785,7 @@ png(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.png")
   qq(aems450k.meta.resultspfCGI$PvalCor.meta, 
      main = bquote("Corrected" ~ lambda == .(aems450k.meta.lambdabcph)),
      col = "#1290D9", pch = 16, xlim = c(0,8), ylim = c(0,25),
-     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75, cex.main = 1.75,
+     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75, cex.main = 1.50,
      bty = "n")
   abline(0, 1, col = "#E55738")
   mtext("QQ-plots", outer = TRUE, cex = 2.0)
@@ -801,13 +806,17 @@ cat("\n  - Manhattan-plot in plaque...")
 # EEFSEC (cg19505196, p = 5.787613e-07, chr3)
 png(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.png"),
     width = 1920, height = 1080)
-# pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.pdf"),
-#     width = 28, height = 8, onefile = TRUE)
-# postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.ps"),
-#            width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.pdf"),
+    width = 28, height = 8, onefile = TRUE)
+postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.ps"),
+           width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+tiff(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.tiff"),
+     width = 1920, height = 1080, units = "px", pointsize = 12,
+     compression = "none", bg = "transparent", 
+     type = "quartz")
 
   par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mai = c(1, 1, 1, 0))
-
+  
   ahrr <- aems450k.meta.resultspfCGI$CpG[grep("AHRR", aems450k.meta.resultspfCGI$SYMBOL)]
   itpk1 <- aems450k.meta.resultspfCGI$CpG[grep("ITPK1", aems450k.meta.resultspfCGI$SYMBOL)]
   hilight.top <- c(ahrr, itpk1)
@@ -826,29 +835,40 @@ cat("\n* Filter on *REPLICATED* signal only...")
 aems450k.meta.resultspfCGIQC <- subset(aems450k.meta.resultspfCGI, PvalCor.aems450k2 < 0.05)
 dim(aems450k.meta.resultspfCGIQC)
 
+aems450k.meta.zph.QC = qnorm(aems450k.meta.resultspfCGIQC$Pval.meta/2)
+aems450k.meta.lambdaph.QC = round(median(aems450k.meta.zph.QC^2)/0.4549364,3) # 0.978
+aems450k.meta.zph.cor.QC = qnorm(aems450k.meta.resultspfCGIQC$PvalCor.meta/2)
+aems450k.meta.lambdaph.cor.QC = round(median(aems450k.meta.zph.cor.QC^2)/0.4549364,3) # 3.226
+
 cat("\n* Plotting...")
 cat("\n  - QQ-plot in plaque...")
 png(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.replicated.png"),
     width = 1024, height = 800)
-# pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.replicated.pdf"),
-#     width = 12, height = 10, onefile = TRUE)
-# postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.replicated.ps"),
-#            width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
-  par(mfrow = c(1,2), oma = c(0, 0, 2, 0))
+pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.replicated.pdf"),
+    width = 12, height = 10, onefile = TRUE)
+postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.replicated.ps"),
+           width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+tiff(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.replicated.tiff"),
+     width = 1024, height = 800, units = "px", pointsize = 12,
+     compression = "none", bg = "transparent",
+     type = "quartz")
+
+  par(mfrow = c(1,2), oma = c(0, 0, 2, 0), mar = c(5, 6, 4, 2) + 0.1)
   qq(aems450k.meta.resultspfCGIQC$Pval.meta, 
-     main = bquote("Uncorrected " ~ lambda == .(aems450k.meta.lambdaph)),
+     main = bquote("Uncorrected " ~ lambda == .(aems450k.meta.lambdaph.QC)),
      col = "#1290D9", pch = 16, xlim = c(0,8), ylim = c(0,25),
-     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75, cex.main = 1.75,
+     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75, cex.main = 1.50,
      bty = "n")
   abline(0, 1, col = "#E55738")
   qq(aems450k.meta.resultspfCGIQC$PvalCor.meta, 
-     main = bquote("Corrected" ~ lambda == .(aems450k.meta.lambdabcph)),
+     main = bquote("Corrected" ~ lambda == .(aems450k.meta.lambdaph.cor.QC)),
      col = "#1290D9", pch = 16, xlim = c(0,8), ylim = c(0,25),
-     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75, cex.main = 1.75,
+     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75, cex.main = 1.50,
      bty = "n")
   abline(0, 1, col = "#E55738")
   mtext("QQ-plots", outer = TRUE, cex = 2.0)
 dev.off()
+par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mar = c(5, 4, 4, 2) + 0.1)
 
 cat("\n  - Manhattan-plot in plaque...")
 # plaque
@@ -864,10 +884,15 @@ cat("\n  - Manhattan-plot in plaque...")
 
 png(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.replicated.png"),
     width = 1920, height = 1080)
-# pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.replicated.pdf"),
-#     width = 28, height = 8, onefile = TRUE)
-# postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.replicated.ps"),
-#            width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.replicated.pdf"),
+    width = 28, height = 8, onefile = TRUE)
+postscript(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.replicated.ps"),
+           width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+tiff(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlot.replicated.tiff"),
+       width = 1024, height = 800, units = "px", pointsize = 12,
+       compression = "none", bg = "transparent",
+       type = "quartz")
+
   par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mai = c(1, 1, 1, 0))
   
   ahrr <- aems450k.meta.resultspfCGIQC$CpG[grep("AHRR", aems450k.meta.resultspfCGIQC$SYMBOL)]
@@ -898,7 +923,7 @@ pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.TopCor.pdf")
   
   par(mfrow = c(1,2), oma = c(0, 0, 2, 0), mar = c(5, 5, 4, 0) + 0.1)
   
-
+  
   # AEMS450K1
   plot(aems450k1.x~aems450k1.y, main = bquote(Pearson~r^2 == .(aems450k1.pearsonR)),
        sub = "(AEMS450K1)",
@@ -931,7 +956,7 @@ rm(top.symbol, top,
    aems450k2.x, aems450k2.y, aems450k2.pearsonR)
 par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mar = c(5, 4, 4, 2) + 0.1)
 
-pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.TopCor.SmokingCurrent_hits_in_ePackYearsSmoking.pdf"))
+pdf(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,"_vs_SmokingCurrent_hits.plaque.TopCor.pdf"))
   top.symbol = "AHRR"
   top = "cg05575921"
   aems450k1.x <- aems450k1.dataph[rownames(aems450k1.dataph) == top, ]
@@ -1059,7 +1084,7 @@ rm(top.ahrr1,top.ahrr2,top.ahrr3,top.itpk1,
    x.itpk1, y.itpk1, pearsonR.itpk1)
 par(mfrow = c(1,1), mar = c(5, 4, 4, 2), oma = c(0, 0, 0, 0))
 
-pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.Top4.SmokingCurrent_hits_in_ePackYearsSmoking.pdf"), paper = "a4r",
+pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,"_vs_SmokingCurrent_hits.plaque.TopCor4.pdf"), paper = "a4r",
     width = 12, height = 8)
   # head(aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC[,31]),], 4)
   # example of known smoking-related CpG
@@ -1068,7 +1093,7 @@ pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.Top4.SmokingCurr
   # 2   cg03991871   chr5   AHRR  2.896744e-11    4.278337e-06
   # 3   cg12806681   chr5   AHRR  5.949100e-09    5.271902e-04
   # 4   cg05284742  chr14  ITPK1  2.045460e-07    1.510517e-02
-
+  
   top.ahrr1 = "cg05575921"
   top.ahrr2 = "cg03991871"
   top.ahrr3 = "cg12806681"
@@ -1144,28 +1169,34 @@ par(mfrow = c(1,1), mar = c(5, 4, 4, 2), oma = c(0, 0, 0, 0))
 cat("\n* Saving results...")
 cat("\n  - writing ALL results...")
 fwrite(aems450k.meta.resultspfCGI, 
-       file = paste0(OUT_loc, "/", Today,".aems450k.meta.ResultsPlaqueCleaned.txt"),
+       file = paste0(OUT_loc, "/", Today,".aems450k.meta.",EWAS_trait,".ResultsPlaqueCleaned.txt"),
        quote = FALSE, sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
 cat("\n  - writing top 10 results...")
 fwrite(utils::head(aems450k.meta.resultspfCGI[order(aems450k.meta.resultspfCGI[,31]),], 10), 
-       file = paste0(OUT_loc, "/", Today,".aems450k.meta.resultspf.top10meta.txt"),
+       file = paste0(OUT_loc, "/", Today,".aems450k.meta.",EWAS_trait,".resultspf.top10meta.txt"),
        quote = FALSE, sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
 cat("\n  - writing top 20 discovery results...")
 fwrite(utils::head(aems450k.meta.resultspfCGI[order(aems450k.meta.resultspfCGI[,27]),], 20), 
-       file = paste0(OUT_loc, "/", Today,".aems450k.meta.resultspf.top20discovery.txt"),
+       file = paste0(OUT_loc, "/", Today,".aems450k.meta.",EWAS_trait,".resultspf.top20discovery.txt"),
        quote = FALSE, sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
 cat("\n  - writing top 20 replication results...")
 fwrite(utils::head(aems450k.meta.resultspfCGIQC[order(aems450k.meta.resultspfCGIQC[,31]),], 20), 
-       file = paste0(OUT_loc, "/", Today,".aems450k.meta.resultspf.top20replication.txt"),
+       file = paste0(OUT_loc, "/", Today,".aems450k.meta.",EWAS_trait,".resultspf.top20replication.txt"),
        quote = FALSE, sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
 
+cat("\n*** saving final datasets data in between steps ***\n")
+aems450k.meta.resultspfCGI.ePackYearsSmoking = aems450k.meta.resultspfCGI
+aems450k.meta.resultspfCGIQC.ePackYearsSmoking = aems450k.meta.resultspfCGIQC
+save(aems450k.meta.resultspfCGI.ePackYearsSmoking, file = paste0(OUT_loc,"/",Today,".",EWAS_trait,".aems450k.meta.resultspfCGI.RData"))
+save(aems450k.meta.resultspfCGIQC.ePackYearsSmoking, file = paste0(OUT_loc,"/",Today,".",EWAS_trait,".aems450k.meta.resultspfCGIQC.RData"))
+
 cat("\n* Let's clean up some old objects we do not need anymore...")
 rm(list.chr, aems450k.meta.resultsp, aems450k.meta.pvalsph, aems450k.meta.zph, aems450k.meta.pvalsbcph, aems450k.meta.zbcph,
-   aems450k.meta.bcp.bh, aems450k.meta.bcpm.bh, aems450k.meta.bcp.th, aems450k.meta.esh, aems450k.meta.seh,
+   aems450k.meta.bcp.bh, aems450k.meta.bcpm.bh, aems450k.meta.bcp.th, aems450k.meta.esh, aems450k.meta.seh, aems450k.meta.th,
    aems450k1.col, aems450k2.col, aems450k1.plothisth, aems450k2.plothisth,
    mean.betah, sd.betah, neg.cutoffh, pos.cutoffh,
    # aems450k1.dataph, aems450k2.dataph,
@@ -1186,4 +1217,6 @@ rm(list.chr, aems450k.meta.resultsp, aems450k.meta.pvalsph, aems450k.meta.zph, a
 cat("\n===========================================================================================")
 cat("SAVE THE DATA")
 
-save.image(paste0(ANALYSIS_loc,"/",Today,".aems450k.meta.analysis.ewas.smoking.plaque.RData"))
+save.image(paste0(ANALYSIS_loc,"/",Today,".aems450k.meta.analysis.ewas.",EWAS_trait,".plaque.RData"))
+
+

@@ -36,7 +36,7 @@ install.packages.auto <- function(x) {
     # Update installed packages - this may mean a full upgrade of R, which in turn
     # may not be warrented. 
     #update.packages(ask = FALSE) 
-    eval(parse(text = sprintf("install.packages(\"%s\", dependencies = TRUE, repos = \"http://cran-mirror.cs.uu.nl/\")", x)))
+    eval(parse(text = sprintf("install.packages(\"%s\", dependencies = TRUE, repos = \"https://cloud.r-project.org/\")", x)))
   }
   if (isTRUE(x %in% .packages(all.available = TRUE))) { 
     eval(parse(text = sprintf("require(\"%s\")", x)))
@@ -366,23 +366,24 @@ cat(paste0("\n\n* Load ",PROJECTDATASET," data..."))
 cat("\n  - loading B/Mvalues of blood samples...")
 load(paste0(INP_AEMS450K1_loc,"/20171229.aems450k1.BvaluesQCIMP.blood.RData"))
 load(paste0(INP_AEMS450K1_loc,"/20171229.aems450k1.MvaluesQCIMP.blood.RData"))
+
 cat("\n  - loading B/Mvalues of plaque samples...")
 load(paste0(INP_AEMS450K1_loc,"/20171229.aems450k1.BvaluesQCIMP.plaque.RData"))
 load(paste0(INP_AEMS450K1_loc,"/20171229.aems450k1.MvaluesQCIMP.plaque.RData"))
 
 cat("----------------------------------------------------------------------------")
-cat(paste0("\n[ EPIGENOME-WIDE ASSOCIATION STUDIES on SMOKING in PLAQUE in ",PROJECTDATASET," ]"))
+cat(paste0("\n[ EPIGENOME-WIDE ASSOCIATION STUDIES on ",EWAS_trait," in PLAQUE in ",PROJECTDATASET," ]"))
 # Reference: https://molepi.github.io/DNAmArray_workflow/06_EWAS.html
 
 cat("\n* Sannity checking the data.")
 cat("\n  - for blood...")
-pdf(paste0(QC_loc,"/",Today,".aems450k1.smoking.blood.MethylationDensity.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k1.",EWAS_trait,".blood.MethylationDensity.pdf"),
     width = 12, height = 8, onefile = TRUE)
   par(mfrow = c(1,2), oma = c(0, 0, 2, 0))
   densityPlot(assays(aems450k1.BvaluesQCblood)$data, sampGroups = aems450k1.BvaluesQCblood$SmokerCurrent, main = "Beta-values", 
               legend = FALSE, 
               xlab = "Beta-values", 
-              col = c("#9FC228", "#E55738"), 
+              pal = c("#9FC228", "#E55738"), 
               bty = "n")
   legend("topright", legend = levels(factor(aems450k1.BvaluesQCblood$SmokerCurrent)), 
          text.col = c("#9FC228", "#E55738"), 
@@ -391,7 +392,7 @@ pdf(paste0(QC_loc,"/",Today,".aems450k1.smoking.blood.MethylationDensity.pdf"),
   densityPlot(assays(aems450k1.MvaluesQCblood)$data, sampGroups = aems450k1.MvaluesQCblood$SmokerCurrent, main = "M-values", 
               legend = FALSE, 
               xlab = "M-values", 
-              col = c("#9FC228", "#E55738"), 
+              pal = c("#9FC228", "#E55738"), 
               bty = "n")
   legend("topright", legend = levels(factor(aems450k1.MvaluesQCblood$SmokerCurrent)), 
          text.col = c("#9FC228", "#E55738"), 
@@ -402,13 +403,13 @@ pdf(paste0(QC_loc,"/",Today,".aems450k1.smoking.blood.MethylationDensity.pdf"),
 dev.off()
 
 cat("\n  - for plaque...")
-pdf(paste0(QC_loc,"/",Today,".aems450k1.smoking.plaque.MethylationDensity.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.MethylationDensity.pdf"),
     width = 12, height = 8, onefile = TRUE)
   par(mfrow = c(1,2), oma = c(0, 0, 2, 0))
   densityPlot(assays(aems450k1.BvaluesQCplaque)$data, sampGroups = aems450k1.BvaluesQCplaque$SmokerCurrent, main = "Beta-values", 
               legend = FALSE, 
               xlab = "Beta-values", 
-              col = c("#9FC228", "#E55738"), 
+              pal = c("#9FC228", "#E55738"), 
               bty = "n")
   legend("topright", legend = levels(factor(aems450k1.BvaluesQCplaque$SmokerCurrent)), 
          text.col = c("#9FC228", "#E55738"), 
@@ -417,7 +418,7 @@ pdf(paste0(QC_loc,"/",Today,".aems450k1.smoking.plaque.MethylationDensity.pdf"),
   densityPlot(assays(aems450k1.MvaluesQCplaque)$data, sampGroups = aems450k1.MvaluesQCplaque$SmokerCurrent, main = "M-values", 
               legend = FALSE, 
               xlab = "M-values", 
-              col = c("#9FC228", "#E55738"), 
+              pal = c("#9FC228", "#E55738"), 
               bty = "n")
   legend("topright", legend = levels(factor(aems450k1.MvaluesQCplaque$SmokerCurrent)), 
          text.col = c("#9FC228", "#E55738"), 
@@ -431,7 +432,7 @@ cat("\nRemoving BvaluesQCIMP objects - as we don't use these anymore.\n")
 rm(aems450k1.BvaluesQCplaque, aems450k1.BvaluesQCblood)
 
 cat("===========================================================================================")
-cat("\n[ CONTINUE EPIGENOME-WIDE ASSOCIATION STUDIES on SMOKING in PLAQUE in ",PROJECTDATASET," ]")
+cat("\n[ CONTINUE EPIGENOME-WIDE ASSOCIATION STUDIES on ",EWAS_trait," in PLAQUE in ",PROJECTDATASET," ]")
 
 cat("\n* Setup the analysis.")
 require(FDb.InfiniumMethylation.hg19)
@@ -520,7 +521,7 @@ tstats <- cbind(limmaT = tstat[,2], limmaB = effectsize, limmaSE = SE)
 tstatsp <- cbind(limmaT = tstatp[,2], limmaB = effectsizep, limmaSE = SEp)
 
 library(BiocParallel)
-register(MulticoreParam(8))
+register(MulticoreParam(2))
 # blood
 bc <- bacon(teststatistics = tstats[,1], effectsizes = tstats[,2], standarderrors = tstats[,3],
             verbose = TRUE) 
@@ -535,23 +536,23 @@ bias(bc)
 
 # PLOT FOR SANITY CHECK -- is the meta-analysis behaving as expected?
 # blood *with* hospital
-pdf(paste0(QC_loc,"/",Today,".aems450k1.traces.smoking.blood.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k1.traces.",EWAS_trait,".blood.pdf"),
     width = 10, height = 10, onefile = TRUE)
   traces(bc)
 dev.off()
-pdf(paste0(QC_loc,"/",Today,".aems450k1.posteriors.smoking.blood.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k1.posteriors.",EWAS_trait,".blood.pdf"),
     width = 10, height = 10, onefile = TRUE)
   posteriors(bc)
 dev.off()
-pdf(paste0(QC_loc,"/",Today,".aems450k1.fittedbacon.smoking.blood.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k1.fittedbacon.",EWAS_trait,".blood.pdf"),
     width = 10, height = 10, onefile = TRUE)
   fit(bc, n = 100) # visualization of the fitting using the Gibbs Sampling algorithm
 dev.off()
-pdf(paste0(QC_loc,"/",Today,".aems450k1.histogram.smoking.blood.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k1.histogram.",EWAS_trait,".blood.pdf"),
     width = 10, height = 10, onefile = TRUE)
   print(plot(bc, type = "hist"))
 dev.off()
-pdf(paste0(QC_loc,"/",Today,".aems450k1.qq.smoking.blood.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k1.qq.",EWAS_trait,".blood.pdf"),
     width = 10, height = 10, onefile = TRUE)
   print(plot(bc, type = "qq"))
 dev.off()
@@ -570,23 +571,23 @@ bias(bcp)
 
 # PLOT FOR SANITY CHECK -- is the meta-analysis behaving as expected?
 # plaque *with* hospital
-pdf(paste0(QC_loc,"/",Today,".aems450k2.traces.smoking.plaque.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k2.traces.",EWAS_trait,".plaque.pdf"),
     width = 10, height = 10, onefile = TRUE)
   traces(bcp)
 dev.off()
-pdf(paste0(QC_loc,"/",Today,".aems450k2.posteriors.smoking.plaque.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k2.posteriors.",EWAS_trait,".plaque.pdf"),
     width = 10, height = 10, onefile = TRUE)
   posteriors(bcp)
 dev.off()
-pdf(paste0(QC_loc,"/",Today,".aems450k2.fittedbacon.smoking.plaque.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k2.fittedbacon.",EWAS_trait,".plaque.pdf"),
     width = 10, height = 10, onefile = TRUE)
   fit(bcp, n = 100) # visualization of the fitting using the Gibbs Sampling algorithm
 dev.off()
-pdf(paste0(QC_loc,"/",Today,".aems450k2.histogram.smoking.plaque.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k2.histogram.",EWAS_trait,".plaque.pdf"),
     width = 10, height = 10, onefile = TRUE)
   print(plot(bcp, type = "hist"))
 dev.off()
-pdf(paste0(QC_loc,"/",Today,".aems450k2.qq.smoking.plaque.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k2.qq.",EWAS_trait,".plaque.pdf"),
     width = 10, height = 10, onefile = TRUE)
   print(plot(bcp, type = "qq"))
 dev.off()
@@ -611,7 +612,7 @@ pvalsbcb <- pval(bc, corrected = TRUE)
 head(pvalsbcb[order(pvalsbcb[,1]),])
 zbcb = qnorm(pvalsbcb[,1]/2)
 lambdabcb = round(median(zbcb^2)/0.4549364,3)
-cat(paste0("\n  - lambda is: [",lambdabcb,"].")) # 1.098
+cat(paste0("\n  - lambda is: [",lambdabcb,"].")) # 1.097
 cat("\n - in plaque...")
 pvalsbcp <- pval(bcp, corrected = TRUE)
 head(pvalsbcp[order(pvalsbcp[,1]),])
@@ -765,12 +766,17 @@ rm(resultspf, aems450k1.resultspfCGI.temp)
 
 cat("\n* Plotting...")
 cat("\n  - QQ-plot in blood...")
-png(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.blood.QQPlot.png"),
+png(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".blood.QQPlot.png"),
     width = 1024, height = 800)
-# pdf(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.blood.QQPlot.pdf"),
-#     width = 12, height = 10, onefile = TRUE)
-# postscript(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.blood.QQPlot.ps"),
-#            width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".blood.QQPlot.pdf"),
+    width = 12, height = 10, onefile = TRUE)
+postscript(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".blood.QQPlot.ps"),
+           width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+tiff(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".blood.QQPlot.tiff"),
+     width = 1024, height = 800, units = "px", pointsize = 12,
+     compression = "none", bg = "transparent",
+     type = "quartz")
+
   par(mfrow = c(1,2), oma = c(0, 0, 2, 0), mar = c(5, 6, 4, 2) + 0.1)
   qq(aems450k1.resultsbfCGI$Pval_limma, 
      main = bquote("Uncorrected " ~ lambda == .(lambdab)),
@@ -781,7 +787,7 @@ png(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.blood.QQPlot.png"),
   qq(aems450k1.resultsbfCGI$Pval_limma_bacon, 
      main = bquote("Corrected" ~ lambda == .(lambdabcb)),
      col = "#1290D9", pch = 16, xlim = c(0,8), ylim = c(0,25),
-     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75, cex.main = 1.75,
+     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75, cex.main = 1.50,
      bty = "n")
   abline(0, 1, col = "#E55738")
   mtext("QQ-plots", outer = TRUE, cex = 2.0)
@@ -789,12 +795,17 @@ dev.off()
 par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mar = c(5, 4, 4, 2) + 0.1)
 
 cat("\n  - QQ-plot in plaque...")
-png(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.plaque.QQPlot.png"),
+png(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.QQPlot.png"),
     width = 1024, height = 800)
-# pdf(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.plaque.QQPlot.pdf"),
-#     width = 12, height = 10, onefile = TRUE)
-# postscript(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.plaque.QQPlot.ps"),
-#            width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.QQPlot.pdf"),
+    width = 12, height = 10, onefile = TRUE)
+postscript(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.QQPlot.ps"),
+           width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+tiff(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.QQPlot.tiff"),
+     width = 1024, height = 800, units = "px", pointsize = 12,
+     compression = "none", bg = "transparent",
+     type = "quartz")
+
   par(mfrow = c(1,2), oma = c(0, 0, 2, 0), mar = c(5, 6, 4, 2) + 0.1)
   qq(aems450k1.resultspfCGI$Pval_limma, 
      main = bquote("Uncorrected " ~ lambda == .(lambdap)),
@@ -805,7 +816,7 @@ png(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.plaque.QQPlot.png"),
   qq(aems450k1.resultspfCGI$Pval_limma_bacon, 
      main = bquote("Corrected" ~ lambda == .(lambdabcp)),
      col = "#1290D9", pch = 16, xlim = c(0,8), ylim = c(0,25),
-     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75, cex.main = 1.75,
+     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75, cex.main = 1.50,
      bty = "n")
   abline(0, 1, col = "#E55738")
   mtext("QQ-plots", outer = TRUE, cex = 2.0)
@@ -836,12 +847,16 @@ cat("\n  - Manhattan-plot in blood...")
   # ALPI (cg05951221, cg21566642, resp. p = 2.989385e-07, p = 3.846215e-07, chr2), 
   # RUBCN (cg03358636, p = 4.957482e-07, chr3)
 
-png(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.blood.ManhattanPlot.png"),
+png(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".blood.ManhattanPlot.png"),
     width = 1920, height = 1080)
-# pdf(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.blood.ManhattanPlot.pdf"),
-#     width = 28, height = 8, onefile = TRUE)
-# postscript(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.blood.ManhattanPlot.ps"),
-#            width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".blood.ManhattanPlot.pdf"),
+    width = 28, height = 8, onefile = TRUE)
+postscript(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".blood.ManhattanPlot.ps"),
+           width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+tiff(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".blood.ManhattanPlot.tiff"),
+     width = 1920, height = 1080, units = "px", pointsize = 12,
+     compression = "none", bg = "transparent", 
+     type = "quartz")
 
   par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mai = c(1, 1, 1, 0))
   ahrr <- aems450k1.resultsbfCGI$CpG[grep("AHRR", aems450k1.resultsbfCGI$SYMBOL)]
@@ -857,6 +872,8 @@ png(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.blood.ManhattanPlot.png"),
   # hilight.topb <- c(ahrr, f2rl3, linc00299, zmiz1, alpi, rubcn)
   hilight.topb <- c(ahrr, f2rl3, linc00299, zmiz1, 
                     alpi, rubcn, tbc1d16, itpk1, or7e2p, mir3649)
+  ewas_p = 0.05/length(aems450k1.resultsbfCGI$CpG)
+  
   manhattan.uithof(aems450k1.resultsbfCGI, chr = "chr", bp = "start", p = "Pval_limma_bacon", snp = "CpG", 
                    highlight = hilight.topb, suggestiveline = FALSE,
                    genomewideline = FALSE, 
@@ -866,7 +883,7 @@ png(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.blood.ManhattanPlot.png"),
                    annotatePval = NULL, annotateTop = NULL)
   
 dev.off()
-rm(ahrr, f2rl3, linc00299, zmiz1, alpi, rubcn, tbc1d16, itpk1, or7e2p, mir3649, hilight.topb)
+rm(ahrr, f2rl3, linc00299, zmiz1, alpi, rubcn, tbc1d16, itpk1, or7e2p, mir3649, hilight.topb, ewas_p)
 par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mai = c(1, 1, 1, 1))
 
 cat("\n  - Manhattan-plot in plaque...")
@@ -895,12 +912,17 @@ cat("\n  - Manhattan-plot in plaque...")
   # ITPK1
   # C2CD4A
   # SORBS1
-png(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.plaque.ManhattanPlot.png"),
+png(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.ManhattanPlot.png"),
     width = 1920, height = 1080)
-# pdf(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.plaque.ManhattanPlot.pdf"),
-#     width = 28, height = 8, onefile = TRUE)
-# postscript(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.plaque.ManhattanPlot.ps"),
-#            width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.ManhattanPlot.pdf"),
+    width = 28, height = 8, onefile = TRUE)
+postscript(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.ManhattanPlot.ps"),
+           width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+tiff(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.ManhattanPlot.tiff"),
+     width = 1920, height = 1080, units = "px", pointsize = 12,
+     compression = "none", bg = "transparent", 
+     type = "quartz")
+
   par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mai = c(1, 1, 1, 0))
   
   ahrr <- aems450k1.resultspfCGI$CpG[grep("AHRR", aems450k1.resultspfCGI$SYMBOL)]
@@ -912,6 +934,8 @@ png(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.plaque.ManhattanPlot.png"),
   olfm2 <- aems450k1.resultspfCGI$CpG[grep("OLFM2", aems450k1.resultspfCGI$SYMBOL)]
 
   hilight.top <- c(ahrr, nthl1, crlf1, glis1, eefsec, prdm16, olfm2)
+  ewas_p = 0.05/length(aems450k1.resultspfCGI$CpG)
+  
   manhattan.uithof(aems450k1.resultspfCGI, chr = "chr", bp = "start", p = "Pval_limma_bacon", snp = "CpG", 
                    highlight = hilight.top, suggestiveline = FALSE,
                    genomewideline = FALSE, 
@@ -920,12 +944,13 @@ png(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.plaque.ManhattanPlot.png"),
                    chrlabs = c(1:22, "X", "Y"),
                    annotatePval = NULL, annotateTop = NULL)
 dev.off()
-rm(ahrr, nthl1, crlf1, glis1, eefsec, prdm16, olfm2, hilight.top)
+rm(ahrr, nthl1, crlf1, glis1, eefsec, prdm16, olfm2, hilight.top, ewas_p)
 par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mai = c(1, 1, 1, 1))
 
 cat("\n  - Top results correlation plots...")
 cat("\n  > in blood...")
-pdf(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.blood.TopCor.pdf"))
+pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".blood.TopCor.pdf"))
+
   top.data <- aems450k1.resultsbfCGI[order(aems450k1.resultsbfCGI$Pval_limma_bacon), ][1,]
   top.symbol <- aems450k1.resultsbfCGI[order(aems450k1.resultsbfCGI$Pval_limma_bacon), "SYMBOL"][1]
   top <- aems450k1.resultsbfCGI[order(aems450k1.resultsbfCGI$Pval_limma_bacon), "CpG"][1]
@@ -942,6 +967,7 @@ pdf(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.blood.TopCor.pdf"))
           frame = FALSE)
   stripchart(x~y, vertical = TRUE,
              method = "jitter", add = TRUE, pch = 20, col = "#1290D9")
+
 dev.off()
 
 # BLOOD: TOP 12 
@@ -953,7 +979,7 @@ dev.off()
   # ZMIZ1 (cg03450842, p = 6.397912e-08, chr2), 
   # ALPI (cg05951221, cg21566642, resp. p = 2.989385e-07, p = 3.846215e-07, chr2), 
   # RUBCN (cg03358636, p = 4.957482e-07, chr3)
-pdf(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.blood.Top12.pdf"), paper = "a4", onefile = TRUE)
+pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".blood.Top12.pdf"), paper = "a4", onefile = TRUE)
   top.ahrr1 <- aems450k1.resultsbfCGI[order(aems450k1.resultsbfCGI$Pval_limma_bacon), "CpG"][1]
   top.ahrr2 <- aems450k1.resultsbfCGI[order(aems450k1.resultsbfCGI$Pval_limma_bacon), "CpG"][2]
   top.ahrr3 <- aems450k1.resultsbfCGI[order(aems450k1.resultsbfCGI$Pval_limma_bacon), "CpG"][3]
@@ -1148,7 +1174,7 @@ rm(top.ahrr1,top.ahrr2,top.ahrr3,top.ahrr4,top.ahrr5,top.ahrr6,top.f2rl3,top.lin
    x.rubcn,y.rubcn,pearsonR.rubcn)
 
 cat("\n  > in plaque...")
-pdf(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.plaque.TopCor.pdf"))
+pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.TopCor.pdf"))
   top.data <- aems450k1.resultspfCGI[order(aems450k1.resultspfCGI$Pval_limma_bacon), ][1,]
   top.symbol <- aems450k1.resultspfCGI[order(aems450k1.resultspfCGI$Pval_limma_bacon), "SYMBOL"][1]
   top <- aems450k1.resultspfCGI[order(aems450k1.resultspfCGI$Pval_limma_bacon), "CpG"][1]
@@ -1173,7 +1199,7 @@ rm(top.data, top.symbol, top, pearsonR, x, y)
   # NTHL1 (cg16650073, p = 1.137520e-11, chr16), 
   # CRLF1 (cg22702618, p = 3.923536e-09, chr19), 
   # GLIS1 (cg18767735, p = 8.335704e-08 , chr1)
-pdf(paste0(PLOT_loc,"/",Today,".aems450k1.smoking.plaque.Top5.pdf"), paper = "a4")
+pdf(paste0(PLOT_loc,"/",Today,".aems450k1.",EWAS_trait,".plaque.Top5.pdf"), paper = "a4")
   top.ahrr1 <- aems450k1.resultspfCGI[order(aems450k1.resultspfCGI$Pval_limma_bacon), "CpG"][1]
   top.nthl1 <- aems450k1.resultspfCGI[order(aems450k1.resultspfCGI$Pval_limma_bacon), "CpG"][2]
   top.ahrr2 <- aems450k1.resultspfCGI[order(aems450k1.resultspfCGI$Pval_limma_bacon), "CpG"][3]
@@ -1262,36 +1288,35 @@ rm(top.ahrr1,top.nthl1,top.ahrr2,top.crlf1,top.glis1,
 cat("\n* Saving results...")
 cat("\n  - writing blood results...")
 # blood
-fwrite(aems450k1.resultsbfCGI, file = paste0(OUT_loc, "/", Today,".aems450k1.ResultsBloodCleaned.txt"),
+fwrite(aems450k1.resultsbfCGI, file = paste0(OUT_loc, "/", Today,".aems450k1.",EWAS_trait,".ResultsBloodCleaned.txt"),
        quote = FALSE, sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
 fwrite(utils::head(aems450k1.resultsbfCGI[order(aems450k1.resultsbfCGI[,24]),], 17), 
-       file = paste0(OUT_loc, "/", Today,".aems450k1.ResultsBloodCleaned.Top17.txt"),
+       file = paste0(OUT_loc, "/", Today,".aems450k1.",EWAS_trait,".ResultsBloodCleaned.Top17.txt"),
        quote = FALSE, sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
 
 # plaque
 cat("\n  - writing plaque results...")
-fwrite(aems450k1.resultspfCGI, file = paste0(OUT_loc, "/", Today,".aems450k1.ResultsPlaqueCleaned.txt"),
+fwrite(aems450k1.resultspfCGI, file = paste0(OUT_loc, "/", Today,".aems450k1.",EWAS_trait,".ResultsPlaqueCleaned.txt"),
             quote = FALSE, sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
 fwrite(utils::head(aems450k1.resultspfCGI[order(aems450k1.resultspfCGI[,24]),], 20), 
-       file = paste0(OUT_loc, "/", Today,".aems450k1.ResultsPlaqueCleaned.Top20.txt"),
+       file = paste0(OUT_loc, "/", Today,".aems450k1.",EWAS_trait,".ResultsPlaqueCleaned.Top20.txt"),
        quote = FALSE, sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
 
 cat("\n   - removing intermediate file...")
 rm(resultsb, resultsp, bc, bcp, covariates, covariatesp, 
    nasb, nasp, fit, fitp, tstat, tstatp, tstats, tstatsp, 
-   feats, hm450.manifest.pop.GoNL, regions, seqinfo.hg19, chr.list, list.chr,
+   feats, hm450.manifest.pop.GoNL, regions, chr.list, list.chr,
    SE, SEp,
    pvalsb, pvalsbcb, pvalsbcp, pvalsp, 
    # data, datap, design, designp, # we keep this for future use
    infobcb, infobcp, 
    padj, padjp, pval, pvalp, effectsize, effectsizep)
 
-cat("-----------------------------------------------------------------------------------")
+cat("\n===========================================================================================")
 cat("SAVE THE DATA")
 
-save.image(paste0(ANALYSIS_loc,"/",Today,".aems450k1.analysis.smoking.RData"))
-
+save.image(paste0(ANALYSIS_loc,"/",Today,".aems450k1.analysis.ewas.",EWAS_trait,".plaque.RData"))

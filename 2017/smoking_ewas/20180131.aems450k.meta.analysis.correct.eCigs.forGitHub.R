@@ -37,7 +37,7 @@ install.packages.auto <- function(x) {
     # Update installed packages - this may mean a full upgrade of R, which in turn
     # may not be warrented. 
     #update.packages(ask = FALSE) 
-    eval(parse(text = sprintf("install.packages(\"%s\", dependencies = TRUE, repos = \"http://cran-mirror.cs.uu.nl/\")", x)))
+    eval(parse(text = sprintf("install.packages(\"%s\", dependencies = TRUE, repos = \"https://cloud.r-project.org/\")", x)))
   }
   if (isTRUE(x %in% .packages(all.available = TRUE))) { 
     eval(parse(text = sprintf("require(\"%s\")", x)))
@@ -168,29 +168,24 @@ getwd()
 
 ### Mac Pro
 # ROOT_loc = "/Volumes/EliteProQx2Media"
-# INP_AE_loc = paste0(ROOT_loc, "/PLINK/_AE_Originals")
 
 ### MacBook
 ROOT_loc = "/Users/swvanderlaan"
-INP_AE_loc = paste0(ROOT_loc, "/PLINK/_AE_Originals")
-
-### HPC
-# ROOT_loc = "/hpc/dhl_ec"
-# INP_AE_loc = paste0(ROOT_loc, "/data/_ae_originals")
 
 ### SOME VARIABLES WE NEED DOWN THE LINE
 PROJECTDATASET = "AEMS450KMETA"
-PROJECTNAME = "smoking"
+PROJECTNAME = "metasmoke"
+SUBPROJECTNAME1 = "AEMS450K1"
+SUBPROJECTNAME2 = "AEMS450K2"
 EWAS_trait = "SmokerCurrent" # Phenotype
 
+INP_AE_loc = paste0(ROOT_loc, "/PLINK/_AE_Originals")
 INP_AEMS450K1_loc = paste0(INP_AE_loc, "/AEMS450K1")
 INP_AEMS450K2_loc = paste0(INP_AE_loc, "/AEMS450K2")
 
-### Mac
 EPIGENETICS_loc = paste0(ROOT_loc, "/PLINK/analyses/epigenetics")
-
-# ### HPC
-# EPIGENETICS_loc = paste0(ROOT_loc, "/svanderlaan/projects/epigenetics")
+RES_AEMS450K1_loc = paste0(EPIGENETICS_loc, "/AEMS450K1")
+RES_AEMS450K2_loc = paste0(EPIGENETICS_loc, "/AEMS450K2")
 
 ifelse(!dir.exists(file.path(EPIGENETICS_loc, "/",PROJECTDATASET)), 
        dir.create(file.path(EPIGENETICS_loc, "/",PROJECTDATASET)), 
@@ -202,12 +197,10 @@ ifelse(!dir.exists(file.path(INP_loc, "/",PROJECTNAME)),
        dir.create(file.path(INP_loc, "/",PROJECTNAME)), 
        FALSE)
 ANALYSIS_loc = paste0(INP_loc,"/",PROJECTNAME)
-
 ifelse(!dir.exists(file.path(ANALYSIS_loc, "/PLOTS")), 
        dir.create(file.path(ANALYSIS_loc, "/PLOTS")), 
        FALSE)
 PLOT_loc = paste0(ANALYSIS_loc,"/PLOTS")
-
 ifelse(!dir.exists(file.path(PLOT_loc, "/COX")), 
        dir.create(file.path(PLOT_loc, "/COX")), 
        FALSE)

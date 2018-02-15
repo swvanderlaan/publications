@@ -1,5 +1,5 @@
 cat("===========================================================================================
-                ANALYSIS ATHERO-EXPRESS METHYLATION STUDIES 450K 2
+                      ANALYSIS ATHERO-EXPRESS METHYLATION STUDIES 450K 2
     
     Version:      v2.9
     
@@ -36,7 +36,7 @@ install.packages.auto <- function(x) {
     # Update installed packages - this may mean a full upgrade of R, which in turn
     # may not be warrented. 
     #update.packages(ask = FALSE) 
-    eval(parse(text = sprintf("install.packages(\"%s\", dependencies = TRUE, repos = \"http://cran-mirror.cs.uu.nl/\")", x)))
+    eval(parse(text = sprintf("install.packages(\"%s\", dependencies = TRUE, repos = \"https://cloud.r-project.org/\")", x)))
   }
   if (isTRUE(x %in% .packages(all.available = TRUE))) { 
     eval(parse(text = sprintf("require(\"%s\")", x)))
@@ -91,11 +91,11 @@ cat("\n* DNAmArray package...\n")
 # - https://github.com/molepi/DNAmArray
 # - https://github.com/bbmri-nl/BBMRIomics
 library(devtools)
-install_github("molepi/DNAmArray", force = F)
+install_github("molepi/DNAmArray", force = FALSE)
 library(DNAmArray)
-install_github("molepi/omicsPrint", ref = "R3.4", force = F)
+install_github("molepi/omicsPrint", ref = "R3.4", force = FALSE)
 library(omicsPrint)
-install_github("bbmri-nl/BBMRIomics", subdir = "BBMRIomics", force = F)
+install_github("bbmri-nl/BBMRIomics", subdir = "BBMRIomics", force = FALSE)
 library(BBMRIomics)
 
 cat("\n* Manhattan plotting function, based on library(\"qqman\")...")
@@ -363,19 +363,19 @@ load(paste0(INP_AEMS450K2_loc,"/20171229.aems450k2.BvaluesQCIMP.plaque.RData"))
 load(paste0(INP_AEMS450K2_loc,"/20171229.aems450k2.MvaluesQCIMP.plaque.RData"))
 
 cat("----------------------------------------------------------------------------")
-cat(paste0("\n[ EPIGENOME-WIDE ASSOCIATION STUDIES on SMOKING in PLAQUE in ",PROJECTDATASET," ]"))
+cat(paste0("\n[ EPIGENOME-WIDE ASSOCIATION STUDIES on ",EWAS_trait," in PLAQUE in ",PROJECTDATASET," ]"))
 # Reference: https://molepi.github.io/DNAmArray_workflow/06_EWAS.html
 
 cat("\n* Sannity checking the data.")
-# png(paste0(PLOT_loc,"/",Today,".aems450k2.smoking.plaque.MethylationDensity.png"),
+# png(paste0(PLOT_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.MethylationDensity.png"),
 #     width = 800, height = 600)
-pdf(paste0(QC_loc,"/",Today,".aems450k2.smoking.plaque.MethylationDensity.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.MethylationDensity.pdf"),
     width = 12, height = 8, onefile = TRUE)
   par(mfrow = c(1,2), oma = c(0, 0, 2, 0))
   densityPlot(assays(aems450k2.BvaluesQCplaque)$data, sampGroups = aems450k2.BvaluesQCplaque$SmokerCurrent, main = "Beta-values", 
               legend = FALSE, 
               xlab = "Beta-values", 
-              col = c("#9FC228", "#E55738"), 
+              pal = c("#9FC228", "#E55738"), 
               bty = "n")
   legend("topright", legend = levels(factor(aems450k2.BvaluesQCplaque$SmokerCurrent)), 
          text.col = c("#9FC228", "#E55738"), 
@@ -384,7 +384,7 @@ pdf(paste0(QC_loc,"/",Today,".aems450k2.smoking.plaque.MethylationDensity.pdf"),
   densityPlot(assays(aems450k2.MvaluesQCplaque)$data, sampGroups = aems450k2.MvaluesQCplaque$SmokerCurrent, main = "M-values", 
               legend = FALSE, 
               xlab = "M-values", 
-              col = c("#9FC228", "#E55738"), 
+              pal = c("#9FC228", "#E55738"), 
               bty = "n")
   legend("topright", legend = levels(factor(aems450k2.MvaluesQCplaque$SmokerCurrent)), 
          text.col = c("#9FC228", "#E55738"), 
@@ -398,7 +398,7 @@ cat("\nRemoving BvaluesQCIMP objects - as we don't use these anymore.")
 rm(aems450k2.BvaluesQCplaque)
 
 cat("===========================================================================================")
-cat("\n[ CONTINUE EPIGENOME-WIDE ASSOCIATION STUDIES on SMOKING in PLAQUE in ",PROJECTDATASET," ]")
+cat("\n[ CONTINUE EPIGENOME-WIDE ASSOCIATION STUDIES on ",EWAS_trait," in PLAQUE in ",PROJECTDATASET," ]")
 
 cat("\n* Setup the analysis.")
 require(FDb.InfiniumMethylation.hg19)
@@ -431,7 +431,7 @@ hm450.manifest.pop.GoNL <- hm450.manifest.pop.GoNL[!is.na(hm450.manifest.pop.GoN
 # plaque
 MvaluesQCplaqueClean <- MvaluesQCplaqueClean[!(names(MvaluesQCplaqueClean) %in% names(hm450.manifest.pop.GoNL)),]  
 cat("\n > we started with:")
-dim(MvaluesQCplaque) # 484249 CpGs, 190 samples
+dim(aems450k2.MvaluesQCplaque) # 484249 CpGs, 190 samples
 cat("\n > we end up with:")
 dim(MvaluesQCplaqueClean) # 443614 CpGs, 187 samples
 
@@ -474,23 +474,23 @@ bias(bcp)
 
 # PLOT FOR SANITY CHECK -- is the meta-analysis behaving as expected?
 # plaque *with* hospital
-pdf(paste0(QC_loc,"/",Today,".aems450k2.traces.smoking.plaque.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k2.traces.",EWAS_trait,".plaque.pdf"),
     width = 10, height = 10, onefile = TRUE)
   traces(bcp)
 dev.off()
-pdf(paste0(QC_loc,"/",Today,".aems450k2.posteriors.smoking.plaque.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k2.posteriors.",EWAS_trait,".plaque.pdf"),
     width = 10, height = 10, onefile = TRUE)
   posteriors(bcp)
 dev.off()
-pdf(paste0(QC_loc,"/",Today,".aems450k2.fittedbacon.smoking.plaque.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k2.fittedbacon.",EWAS_trait,".plaque.pdf"),
     width = 10, height = 10, onefile = TRUE)
   fit(bcp, n = 100) # visualization of the fitting using the Gibbs Sampling algorithm
 dev.off()
-pdf(paste0(QC_loc,"/",Today,".aems450k2.histogram.smoking.plaque.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k2.histogram.",EWAS_trait,".plaque.pdf"),
     width = 10, height = 10, onefile = TRUE)
   print(plot(bcp, type = "hist"))
 dev.off()
-pdf(paste0(QC_loc,"/",Today,".aems450k2.qq.smoking.plaque.pdf"),
+pdf(paste0(QC_loc,"/",Today,".aems450k2.qq.",EWAS_trait,".plaque.pdf"),
     width = 10, height = 10, onefile = TRUE)
   print(plot(bcp, type = "qq"))
 dev.off()
@@ -602,23 +602,29 @@ rm(resultspf, aems450k2.resultspfCGI.temp, Other, SNPs.137CommonSingle, Location
 
 cat("\n* Plotting...")
 cat("\n  - QQ-plot in plaque...")
-png(paste0(PLOT_loc,"/",Today,".aems450k2.smoking.plaque.QQPlot.png"),
+png(paste0(PLOT_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.QQPlot.png"),
     width = 1024, height = 800)
-# pdf(paste0(PLOT_loc,"/",Today,".aems450k2.smoking.plaque.QQPlot.pdf"),
-#     width = 12, height = 10, onefile = TRUE)
-# postscript(paste0(PLOT_loc,"/",Today,".aems450k2.smoking.plaque.QQPlot.ps"),
-#            width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+pdf(paste0(PLOT_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.QQPlot.pdf"),
+    width = 12, height = 10, onefile = TRUE)
+postscript(paste0(PLOT_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.QQPlot.ps"),
+           width = 12, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+tiff(paste0(PLOT_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.QQPlot.tiff"),
+     width = 1024, height = 800, units = "px", pointsize = 12,
+     compression = "none", bg = "transparent", 
+     type = "quartz")
+
   par(mfrow = c(1,2), oma = c(0, 0, 2, 0), mar = c(5, 6, 4, 2) + 0.1)
+
   qq(aems450k2.resultspfCGI$Pval_limma, 
      main = bquote("Uncorrected " ~ lambda == .(lambdap)),
      col = "#1290D9", pch = 16, xlim = c(0,8), ylim = c(0,25),
-     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75,  cex.main = 1.75,
+     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75,  cex.main = 1.50,
      bty = "n")
   abline(0, 1, col = "#E55738")
   qq(aems450k2.resultspfCGI$Pval_limma_bacon, 
      main = bquote("Corrected" ~ lambda == .(lambdabcp)),
      col = "#1290D9", pch = 16, xlim = c(0,8), ylim = c(0,25),
-     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75, cex.main = 1.75,
+     cex = 1.75, cex.lab = 1.75, cex.axis = 1.75, cex.main = 1.50,
      bty = "n")
   abline(0, 1, col = "#E55738")
   mtext("QQ-plots", outer = TRUE, cex = 2.0)
@@ -642,14 +648,18 @@ cat("\n  - Manhattan-plot in plaque...")
   # sf3b1 <- resultspf$CpG[grep("SF3B1", resultspf$SYMBOL)]
   # snx1 <- resultspf$CpG[grep("SNX1", resultspf$SYMBOL)]
 
-    # hilight.top <- c(ahrr, chsy1, mtus2, mrpl54, sf3b1, snx1)
+  # hilight.top <- c(ahrr, chsy1, mtus2, mrpl54, sf3b1, snx1)
   # hilight.top <- c(ahrr, chsy1, mtus2)
-png(paste0(PLOT_loc,"/",Today,".aems450k2.smoking.plaque.ManhattanPlot.png"),
+png(paste0(PLOT_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.ManhattanPlot.png"),
     width = 1920, height = 1080)
-# pdf(paste0(PLOT_loc,"/",Today,".aems450k2.smoking.plaque.ManhattanPlot.pdf"),
-#     width = 28, height = 8, onefile = TRUE)
-# postscript(paste0(PLOT_loc,"/",Today,".aems450k2.smoking.plaque.ManhattanPlot.ps"),
-#            width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+pdf(paste0(PLOT_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.ManhattanPlot.pdf"),
+    width = 28, height = 8, onefile = TRUE)
+postscript(paste0(PLOT_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.ManhattanPlot.ps"),
+           width = 28, height = 10, onefile = TRUE, bg = "transparent", family = "Helvetica")
+tiff(paste0(PLOT_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.ManhattanPlot.tiff"),
+     width = 1920, height = 1080, units = "px", pointsize = 12,
+     compression = "none", bg = "transparent", 
+     type = "quartz")
 
   par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mai = c(1, 1, 1, 0))
   
@@ -677,7 +687,7 @@ par(mfrow = c(1,1), oma = c(0, 0, 0, 0), mai = c(1, 1, 1, 1))
 
 
 cat("\n  - Top result correlation plot...")
-pdf(paste0(PLOT_loc,"/",Today,".aems450k2.smoking.plaque.TopCor.pdf"))
+pdf(paste0(PLOT_loc,"/",Today,".aems450k2.",EWAS_trait,".plaque.TopCor.pdf"))
   top.data <- aems450k2.resultspfCGI[order(aems450k2.resultspfCGI$Pval_limma_bacon), ][1,]
   top.symbol <- aems450k2.resultspfCGI[order(aems450k2.resultspfCGI$Pval_limma_bacon), "SYMBOL"][1]
   top <- aems450k2.resultspfCGI[order(aems450k2.resultspfCGI$Pval_limma_bacon), "CpG"][1]
@@ -696,8 +706,7 @@ pdf(paste0(PLOT_loc,"/",Today,".aems450k2.smoking.plaque.TopCor.pdf"))
   stripchart(x~y, vertical = TRUE,
              method = "jitter", add = TRUE, pch = 20, cex = 1.50, col = "#1290D9")
 dev.off()
-rm(top.data, top.symbol, top,
-   x, y, pearsonR)
+rm(top.data, top.symbol, top, x, y, pearsonR)
 
 cat("\n* Saving results...")
 cat("\n  - writing ALL results...")
@@ -719,5 +728,5 @@ rm(resultsp, bcp, covariatesp,
 cat("\n===========================================================================================")
 cat("SAVE THE DATA")
 
-save.image(paste0(ANALYSIS_loc,"/",Today,".aems450k2.analysis.ewas.smoking.plaque.RData"))
+save.image(paste0(ANALYSIS_loc,"/",Today,".aems450k2.analysis.ewas.",EWAS_trait,".plaque.RData"))
 
