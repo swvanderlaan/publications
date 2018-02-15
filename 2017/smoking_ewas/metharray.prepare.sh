@@ -109,17 +109,17 @@ echo ""
 #RAWDIR=${ORIGINALS}/somedir
 
 echobold "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-# 
-# ###COMBO VERSION
-# echobold "Getting target file."
-# echo "Rscript metharray.target.creator.v1.R -p ${ORIGINALS} -i AEMS450KCombo -r RAWDATA -o OUTPUT -f ${PROJECTNAME} -n 8" > ${ORIGINALS}/${AEMS450KCOMBO}/metharray.target.creator.v1.sh
-# echo "" >> ${ORIGINALS}/${AEMS450KCOMBO}/metharray.target.creator.v1.sh
-# qsub -S /bin/bash -N TARGET.MA.${PROJECTNAME} -e ${ORIGINALS}/${AEMS450KCOMBO}/metharray.target.creator.v1.errors -o ${ORIGINALS}/${AEMS450KCOMBO}/metharray.target.creator.v1.log -l h_rt=${TARGETTIME} -l h_vmem=${TARGETMEM} -pe threaded ${TARGETCORES} -M s.w.vanderlaan-2@umcutrecht.nl -m ea -cwd ${ORIGINALS}/${AEMS450KCOMBO}/metharray.target.creator.v1.sh
-# 
-# echobold "Summarizing methylation array data."
-# echo "Rscript metharray.summarizer.v1.R -p ${ORIGINALS} -i AEMS450KCombo -r RAWDATA -o OUTPUT -f ${PROJECTNAME} -n 8" > ${ORIGINALS}/${AEMS450KCOMBO}/metharray.summarizer.v1.sh
-# echo "" >> ${ORIGINALS}/${AEMS450KCOMBO}/metharray.summarizer.v1.sh
-# qsub -S /bin/bash -N SUM.MA.${PROJECTNAME} -hold_jid TARGET.MA.${PROJECTNAME} -e ${ORIGINALS}/${AEMS450KCOMBO}/metharray.summarizer.v1.errors -o ${ORIGINALS}/${AEMS450KCOMBO}/metharray.summarizer.v1.log -l h_rt=${SUMTIME} -l h_vmem=${SUMMEM} -pe threaded ${SUMCORES} -M s.w.vanderlaan-2@umcutrecht.nl -m ea -cwd ${ORIGINALS}/${AEMS450KCOMBO}/metharray.summarizer.v1.sh
+
+###COMBO VERSION
+echobold "Getting target file."
+echo "Rscript metharray.target.creator.v1.R -p ${ORIGINALS} -i AEMS450KCombo -r RAWDATA -o OUTPUT -f ${PROJECTNAME} -n 8" > ${ORIGINALS}/${AEMS450KCOMBO}/metharray.target.creator.v1.sh
+echo "" >> ${ORIGINALS}/${AEMS450KCOMBO}/metharray.target.creator.v1.sh
+qsub -S /bin/bash -N TARGET.MA.${PROJECTNAME} -e ${ORIGINALS}/${AEMS450KCOMBO}/metharray.target.creator.v1.errors -o ${ORIGINALS}/${AEMS450KCOMBO}/metharray.target.creator.v1.log -l h_rt=${TARGETTIME} -l h_vmem=${TARGETMEM} -pe threaded ${TARGETCORES} -M s.w.vanderlaan-2@umcutrecht.nl -m ea -cwd ${ORIGINALS}/${AEMS450KCOMBO}/metharray.target.creator.v1.sh
+
+echobold "Summarizing methylation array data."
+echo "Rscript metharray.summarizer.v1.R -p ${ORIGINALS} -i AEMS450KCombo -r RAWDATA -o OUTPUT -f ${PROJECTNAME} -n 8" > ${ORIGINALS}/${AEMS450KCOMBO}/metharray.summarizer.v1.sh
+echo "" >> ${ORIGINALS}/${AEMS450KCOMBO}/metharray.summarizer.v1.sh
+qsub -S /bin/bash -N SUM.MA.${PROJECTNAME} -hold_jid TARGET.MA.${PROJECTNAME} -e ${ORIGINALS}/${AEMS450KCOMBO}/metharray.summarizer.v1.errors -o ${ORIGINALS}/${AEMS450KCOMBO}/metharray.summarizer.v1.log -l h_rt=${SUMTIME} -l h_vmem=${SUMMEM} -pe threaded ${SUMCORES} -M s.w.vanderlaan-2@umcutrecht.nl -m ea -cwd ${ORIGINALS}/${AEMS450KCOMBO}/metharray.summarizer.v1.sh
 
 
 ### PER DATASET VERSION
@@ -135,24 +135,22 @@ echobold "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #echo "Rscript metharray.summarizer.v1.R -p ${ORIGINALS} -i AEMS450KCombo/AEMS450K2 -r RAWDATA -o OUTPUT -f ${PROJECTNAME} -n 8" > ${ORIGINALS}/${AEMS450KCOMBO}/metharray.aems450k2.summarizer.v1.sh
 #qsub -S /bin/bash -N SUM.AEMS450K2.MA.${PROJECTNAME} -hold_jid TARGET.AEMS450K2.MA.${PROJECTNAME} -e ${ORIGINALS}/${AEMS450KCOMBO}/metharray.aems450k2.summarizer.v1.errors -o ${ORIGINALS}/${AEMS450KCOMBO}/metharray.aems450k2.summarizer.v1.log -l h_rt=${SUMTIME} -l h_vmem=${SUMMEM} -pe threaded ${SUMCORES} -M s.w.vanderlaan-2@umcutrecht.nl -m ea -cwd ${ORIGINALS}/${AEMS450KCOMBO}/metharray.aems450k2.summarizer.v1.sh
 
+echobold "Interactively visualize and print outliers. For convenience: DO THIS LOCALLY!!!"
+Rscript metharray.visualizer.v1.R -p ${ORIGINALS} -i AEMS450KCombo -r RAWDATA -o OUTPUT -f ${PROJECTNAME} -n 8
 
 
-# echobold "Interactively visualize and print outliers. For convenience: DO THIS LOCALLY!!!"
-# Rscript metharray.visualizer.v1.R -p ${ORIGINALS} -i AEMS450KCombo -r RAWDATA -o OUTPUT -f ${PROJECTNAME} -n 8
+###COMBO VERSION
+echobold "Creating extended RGChannelSet."
+###Rscript metharray.rgset.creator.parallel.v1.R -p ${ORIGINALS} -i AEMS450KCombo -o OUTPUT -t ${PROJECTNAME}.targets.Rdata -r ${PROJECTNAME}.outliers.csv -f ${PROJECTNAME} -n ${RCORES}
+echo "Rscript metharray.rgset.creator.parallel.v1.R -p ${ORIGINALS} -i AEMS450KCombo -o OUTPUT -t ${PROJECTNAME}.targets.Rdata -r ${PROJECTNAME}.outliers.csv -f ${PROJECTNAME} -n ${RCORES}" > ${ORIGINALS}/${AEMS450KCOMBO}/metharray.rgset.creator.parallel.v1.sh
+echo "" >> ${ORIGINALS}/${AEMS450KCOMBO}/metharray.rgset.creator.parallel.v1.sh
+qsub -S /bin/bash -N RGSET.MA.${PROJECTNAME} -hold_jid SUM.MA.${PROJECTNAME} -e ${ORIGINALS}/${AEMS450KCOMBO}/metharray.rgset.creator.parallel.v1.errors -o ${ORIGINALS}/${AEMS450KCOMBO}/metharray.rgset.creator.parallel.v1.log -l h_rt=${RGTIME} -l h_vmem=${RGMEM} -M s.w.vanderlaan-2@umcutrecht.nl -m ea -cwd ${ORIGINALS}/${AEMS450KCOMBO}/metharray.rgset.creator.parallel.v1.sh
 
-# 
-# ###COMBO VERSION
-# echobold "Creating extended RGChannelSet."
-# ###Rscript metharray.rgset.creator.parallel.v1.R -p ${ORIGINALS} -i AEMS450KCombo -o OUTPUT -t ${PROJECTNAME}.targets.Rdata -r ${PROJECTNAME}.outliers.csv -f ${PROJECTNAME} -n ${RCORES}
-# echo "Rscript metharray.rgset.creator.parallel.v1.R -p ${ORIGINALS} -i AEMS450KCombo -o OUTPUT -t ${PROJECTNAME}.targets.Rdata -r ${PROJECTNAME}.outliers.csv -f ${PROJECTNAME} -n ${RCORES}" > ${ORIGINALS}/${AEMS450KCOMBO}/metharray.rgset.creator.parallel.v1.sh
-# echo "" >> ${ORIGINALS}/${AEMS450KCOMBO}/metharray.rgset.creator.parallel.v1.sh
-# qsub -S /bin/bash -N RGSET.MA.${PROJECTNAME} -hold_jid SUM.MA.${PROJECTNAME} -e ${ORIGINALS}/${AEMS450KCOMBO}/metharray.rgset.creator.parallel.v1.errors -o ${ORIGINALS}/${AEMS450KCOMBO}/metharray.rgset.creator.parallel.v1.log -l h_rt=${RGTIME} -l h_vmem=${RGMEM} -M s.w.vanderlaan-2@umcutrecht.nl -m ea -cwd ${ORIGINALS}/${AEMS450KCOMBO}/metharray.rgset.creator.parallel.v1.sh
-# 
-# echobold "Functional normalization of the extended RGChannelSet."
-# ###Rscript metharray.fun.normalizer.v1.R -p ${ORIGINALS} -i AEMS450KCombo -o OUTPUT -r aems450k.RGChannelSetQC.Rdata -f ${PROJECTNAME}
-# echo "Rscript metharray.fun.normalizer.v1.R -p ${ORIGINALS} -i AEMS450KCombo -o OUTPUT -r aems450k.RGChannelSetQC.Rdata -f ${PROJECTNAME}" > ${ORIGINALS}/${AEMS450KCOMBO}/metharray.fun.normalizer.v1.sh
-# echo "" >> ${ORIGINALS}/${AEMS450KCOMBO}/metharray.fun.normalizer.v1.sh
-# qsub -S /bin/bash -N GRSET.MA.${PROJECTNAME} -hold_jid RGSET.MA.${PROJECTNAME} -e ${ORIGINALS}/${AEMS450KCOMBO}/metharray.fun.normalizer.v1.errors -o ${ORIGINALS}/${AEMS450KCOMBO}/metharray.fun.normalizer.v1.log -l h_rt=${GRTIME} -l h_vmem=${GRMEM} -M s.w.vanderlaan-2@umcutrecht.nl -m ea -cwd ${ORIGINALS}/${AEMS450KCOMBO}/metharray.fun.normalizer.v1.sh
+echobold "Functional normalization of the extended RGChannelSet."
+###Rscript metharray.fun.normalizer.v1.R -p ${ORIGINALS} -i AEMS450KCombo -o OUTPUT -r aems450k.RGChannelSetQC.Rdata -f ${PROJECTNAME}
+echo "Rscript metharray.fun.normalizer.v1.R -p ${ORIGINALS} -i AEMS450KCombo -o OUTPUT -r aems450k.RGChannelSetQC.Rdata -f ${PROJECTNAME}" > ${ORIGINALS}/${AEMS450KCOMBO}/metharray.fun.normalizer.v1.sh
+echo "" >> ${ORIGINALS}/${AEMS450KCOMBO}/metharray.fun.normalizer.v1.sh
+qsub -S /bin/bash -N GRSET.MA.${PROJECTNAME} -hold_jid RGSET.MA.${PROJECTNAME} -e ${ORIGINALS}/${AEMS450KCOMBO}/metharray.fun.normalizer.v1.errors -o ${ORIGINALS}/${AEMS450KCOMBO}/metharray.fun.normalizer.v1.log -l h_rt=${GRTIME} -l h_vmem=${GRMEM} -M s.w.vanderlaan-2@umcutrecht.nl -m ea -cwd ${ORIGINALS}/${AEMS450KCOMBO}/metharray.fun.normalizer.v1.sh
 
 
 ### PER DATASET VERSION
