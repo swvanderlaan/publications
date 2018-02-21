@@ -56,6 +56,8 @@ Association of the significant CpGs with histological plaque characteristics.
 Association of 'current smoking' with gene counts in carotid plaques. A pilot RNA-sequencing experiment.
 - *20180213.aems450k.meta.analysis.ewas.CpG_vs_RNA.R*</br>
 Association of significant CpGs with gene counts from the RNA-sequencing experiment. 
+- *ann2expann.pl*</br>
+Expands the annotation file.
 
 #### Notes
 Scripts will work within the context of a certain Linux environment, for example a CentOS7 system on a SUN Grid Engine background or macOS X Lion+ (version 10.7.[x]+). 
