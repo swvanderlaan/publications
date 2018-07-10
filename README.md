@@ -41,7 +41,7 @@ Link to the publication:.
 
 ## 2017
 
-### [Smoking is associated to DNA methylation in atherosclerotic carotid lesions.](2017/smoking_ewas/)
+### [Smoking is associated to DNA methylation in atherosclerotic carotid lesions.](2017/smoking_ewas/README.md)
 
 For this study we performed an **E**pigenome-**W**ide **A**ssociation **S**tudy (EWAS) of DNA derived from whole-blood and carotid plaques.
 
