@@ -2,7 +2,7 @@ Cystatin C and Cardiovascular Disease: A Mendelian Randomization Study
 ===========================================================
 
 #### This readme
-This readme accompanies the paper "Cystatin C and Cardiovascular Disease: A Mendelian Randomization Study." by [Van der Laan S.W. *et al*](https://www.sciencedirect.com/science/article/pii/S0735109716344382?via%3Dihub).
+This readme accompanies the paper "Cystatin C and Cardiovascular Disease: A Mendelian Randomization Study." by [Van der Laan S.W. *et al*. **JACC 2016**](https://www.sciencedirect.com/science/article/pii/S0735109716344382?via%3Dihub).
 
 #### Abstract
 **Background** Epidemiological studies show that high circulating cystatin C is associated with risk of cardiovascular disease (CVD), independent of creatinine-based renal function measurements. It is unclear whether this relationship is causal, arises from residual confounding, and/or is a consequence of reverse causation.

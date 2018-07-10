@@ -2,7 +2,7 @@ Smoking is associated to DNA methylation in atherosclerotic carotid lesions
 ===========================================================
 
 #### This readme
-This readme accompanies the paper "Smoking is associated to DNA methylation in atherosclerotic carotid lesions." by Siemelink M. and Van der Laan S.W. *et al*.
+This readme accompanies the paper "Smoking is associated to DNA methylation in atherosclerotic carotid lesions." by Siemelink M. and [Van der Laan S.W. *et al*. **Journal 2018**]().
 
 #### Abstract
 **Background:** Tobacco smoking is a major risk factor for atherosclerotic disease and has been associated with DNA methylation (DNAm) changes in blood cells. However, whether smoking influences DNAm in the diseased vascular wall is unknown but may prove crucial in understanding the pathophysiology of atherosclerosis. In the this study we associated current tobacco smoking to epigenome-wide DNAm in atherosclerotic plaques from patients undergoing carotid endarterectomy (CEA).

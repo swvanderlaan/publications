@@ -2,7 +2,7 @@ Genetic susceptibility loci for cardiovascular disease and their impact on ather
 ===========================================================
 
 #### This readme
-This readme accompanies the paper "Genetic susceptibility loci for cardiovascular disease and their impact on atherosclerotic plaques." by [Van der Laan S.W. *et al*]().
+This readme accompanies the paper "Genetic susceptibility loci for cardiovascular disease and their impact on atherosclerotic plaques." by [Van der Laan S.W. *et al*. **Journal 2018**]().
 
 #### Abstract
 **Background** Atherosclerosis is a chronic inflammatory disease in part caused by lipid uptake in the vascular wall, but the exact underlying mechanisms leading to acute myocardial infarction and stroke remain poorly understood. Large consortia identified genetic susceptibility loci that associate with large artery ischemic stroke (LAS) and coronary artery disease (CAD). However, deciphering their underlying mechanisms is challenging. Histological studies identified destabilizing characteristics in human atherosclerotic plaques that associate with clinical outcome. To what extent established susceptibility loci for LAS and CAD relate to plaque characteristics is thus far unknown but may point to novel mechanisms. 

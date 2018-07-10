@@ -19,7 +19,7 @@ Scripts will work within the context of a certain Linux environment, for example
 
 ## 2018
 
-### CTMM: eQTL analysis in monocytes
+### [CTMM: eQTL analysis in monocytes](2018/ctmm)
 
 [more information to follow]
 
@@ -28,7 +28,7 @@ For the eQTL analyses in monocytes from CTMM we developed the [QTLToolKit](https
 Link to the publication:.
 
 
-### Meta-analysis of GWAS for serum FABP4 levels
+### [Meta-analysis of GWAS for serum FABP4 levels](2018/fabp4)
 
 [more information to follow]
 
@@ -41,14 +41,14 @@ Link to the publication:.
 
 ## 2017
 
-### [Smoking is associated to DNA methylation in atherosclerotic carotid lesions.](2017/smoking_ewas/README.md)
+### [Smoking is associated to DNA methylation in atherosclerotic carotid lesions.](2017/smoking_ewas/)
 
 For this study we performed an **E**pigenome-**W**ide **A**ssociation **S**tudy (EWAS) of DNA derived from whole-blood and carotid plaques.
 
 Link to the publication: revision is submitted; link follows [asap].
 
 
-### [CVD loci](2018/cvd_loci)
+### [CVD loci](2017/cvd_loci)
 
 For this I used mainly [GWASToolKit](https://github.com/swvanderlaan/GWASToolKit). Some additional useful scripts I used are found in the [HerculesToolKit](https://github.com/swvanderlaan/HerculesToolKit). The polygenic (risk) scores were made with a script we (Jessica van Setten and I) had gotten via Eli Stahl. All (raw) genotype data will be made available soon via EGA; a link is supplied above.
 
