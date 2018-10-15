@@ -2,9 +2,9 @@ cat("===========================================================================
                 META-ANALYSIS ATHERO-EXPRESS METHYLATION STUDIES 450K 1 & 2
               EPIGENOME-WIDE ASSOCIATION STUDY OF AUTOSOMSAL SEX-DIFFERENCES
 
-    Version:      v2.6
+    Version:      v2.6.1
     
-    Last update:  2018-09-25
+    Last update:  2018-10-15
     Written by:   Sander W. van der Laan (s.w.vanderlaan-2@umcutrecht.nl);
                   inspired by previous work of Marten A. Siemelink
     
@@ -811,7 +811,7 @@ aems450k.meta.pvalsph <- pval(aems450k.meta.bcpm.bh, corrected = FALSE)
 head(aems450k.meta.pvalsph[order(aems450k.meta.pvalsph[,3]),], 10)
 aems450k.meta.zph = qnorm(aems450k.meta.pvalsph[,3]/2)
 aems450k.meta.lambdaph = round(median(aems450k.meta.zph^2)/0.4549364,3)
-cat(paste0("\n  - lambda is: [",aems450k.meta.lambdaph,"].")) # 3.098
+cat(paste0("\n  - lambda is: [",aems450k.meta.lambdaph,"].")) # 1.587
 
 cat("\n * Corrected results.")
 # plaque *with* hospital
@@ -819,18 +819,12 @@ aems450k.meta.pvalsbcph <- pval(aems450k.meta.bcpm.bh, corrected = TRUE)
 head(aems450k.meta.pvalsbcph[order(aems450k.meta.pvalsbcph[,3]),], 10)
 aems450k.meta.zbcph = qnorm(aems450k.meta.pvalsbcph[,3]/2)
 aems450k.meta.lambdabcph = round(median(aems450k.meta.zbcph^2)/0.4549364,3)
-cat(paste0("\n  - lambda is: [",aems450k.meta.lambdabcph,"].")) # 3.098
+cat(paste0("\n  - lambda is: [",aems450k.meta.lambdabcph,"].")) # 1.587
 
 cat("\n * Annotating corrected results for plotting and other purposes.")
 cat("\n   - annotating...")
 # plaque
-# for some reason does this function take forever since the last update to R 3.4.3.
-# infobcp <- cpgInfo(rownames(aems450k.meta.pvalsbcph), TxDb = "TxDb.Hsapiens.UCSC.hg19.knownGene")
-infobcp <- as.data.frame(fread(paste0(OUT_loc, "/20171229.aems450k.meta.infobcp.hm450kannot.txt"),
-                               header = TRUE, na.strings = "NA", dec = ".", verbose = TRUE, showProgress = TRUE), keep.rownames = TRUE)
-rownames(infobcp) <- infobcp$V1
-infobcp$V1 <- NULL
-# head(infobcp)
+infobcp <- cpgInfo(rownames(aems450k.meta.pvalsbcph), TxDb = "TxDb.Hsapiens.UCSC.hg19.knownGene")
 
 cat("\n   - merging with results...")
 # add in effect sizes 
@@ -923,7 +917,6 @@ str(aems450k.meta.resultspfCGI)
 dim(aems450k.meta.resultspfCGI)
 rm(aems450k.meta.resultspf, Islands.UCSC.forannotate, Other.forannotate, Islands.UCSC, aems450k.meta.resultspfCGI.temp)
 
-
 cat("\n* Plotting...")
 cat("\n  - QQ-plot in plaque...")
 png(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.QQPlot.png"),
@@ -988,7 +981,7 @@ png(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlo
                    genomewideline = FALSE, 
                    cex = 2.5, cex.axis = 1.75, cex.lab = 1.75,
                    col = uithof_color, 
-                   ylim = c(0, 300),
+                   # ylim = c(0, 300),
                    annotatePval = NULL, annotateTop = NULL)
 dev.off()
 rm(hilight.top, top1, top2, top3, top4, top5, top6, top7, top8, top9, top10)
@@ -1061,7 +1054,7 @@ png(paste0(PLOT_loc,"/",Today,".aems450k.meta.",EWAS_trait,".plaque.ManhattanPlo
                    genomewideline = FALSE, 
                    cex = 2.50, cex.axis = 1.75, cex.lab = 1.75,
                    col = uithof_color, 
-                   ylim = c(0, 300),
+                   # ylim = c(0, 300),
                    annotatePval = NULL, annotateTop = NULL)
 dev.off()
 # rm(hilight.top, ahrr, itpk1)
@@ -1382,11 +1375,15 @@ fwrite(aems450k.meta.resultspfCGI,
        file = paste0(OUT_loc, "/", Today,".aems450k.meta.",EWAS_trait,".ResultsPlaqueCleaned.txt"),
        quote = FALSE, sep = ",", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
+library(R.utils)
+gzip(paste0(OUT_loc, "/", Today,".aems450k.meta.",EWAS_trait,".ResultsPlaqueCleaned.txt"))
+
 cat("\n  - writing top 10 results...\n")
 fwrite(utils::head(aems450k.meta.resultspfCGI[order(aems450k.meta.resultspfCGI[,31]),], 10), 
        file = paste0(OUT_loc, "/", Today,".aems450k.meta.",EWAS_trait,".resultspf.top10meta.txt"),
        quote = FALSE, sep = ",", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
+
 cat("\n  - writing top 20 discovery results...\n")
 fwrite(utils::head(aems450k.meta.resultspfCGI[order(aems450k.meta.resultspfCGI[,27]),], 20), 
        file = paste0(OUT_loc, "/", Today,".aems450k.meta.",EWAS_trait,".resultspf.top20discovery.txt"),
@@ -1412,6 +1409,8 @@ fwrite(aems450k.meta.resultspfCGIQC.Sample_Sex.ewas,
        file = paste0(OUT_loc, "/", Today,".aems450k.meta.",EWAS_trait,".resultspfCGIQC.ewas.txt"),
        quote = FALSE, sep = ",", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE,
        showProgress = TRUE, verbose = TRUE)
+library(R.utils)
+gzip(paste0(OUT_loc, "/", Today,".aems450k.meta.",EWAS_trait,".resultspfCGIQC.ewas.txt"))
 
 cat("\n* Let's clean up some old objects we do not need anymore...")
 rm(list.chr, aems450k.meta.resultsp, aems450k.meta.pvalsph, aems450k.meta.zph, aems450k.meta.th,
@@ -1441,5 +1440,5 @@ cat("SAVE THE DATA")
 
 save.image(paste0(ANALYSIS_loc,"/",Today,".aems450k.meta.analysis.ewas.",EWAS_trait,".plaque.RData"))
 
-
+sessionInfo()
 
