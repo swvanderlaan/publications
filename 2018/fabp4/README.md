@@ -2,7 +2,7 @@ Working title: meta-GWAS of FABP4
 ===========================================================
 
 #### This readme
-This readme accompanies the paper "meta-GWAS of FABP4."[preliminart title] by [Van der Laan S.W. *et al*. **Journal 2019**]().
+This readme accompanies the paper "_A functional locus at 8q21.13 associated to FABP4 levels and causally links coronary artery disease and type 2 diabetes._" [preliminart title] by [Van der Laan S.W. *et al*. **Journal 2019**]().
 
 #### Abstract
 **Background** 
