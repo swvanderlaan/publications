@@ -2,7 +2,7 @@ Working title: meta-GWAS of FABP4
 ===========================================================
 
 #### This readme
-This readme accompanies the paper "meta-GWAS of FABP4." by [Van der Laan S.W. *et al*. **Journal 2018**]().
+This readme accompanies the paper "meta-GWAS of FABP4."[preliminart title] by [Van der Laan S.W. *et al*. **Journal 2019**]().
 
 #### Abstract
 **Background** 
@@ -15,6 +15,10 @@ This readme accompanies the paper "meta-GWAS of FABP4." by [Van der Laan S.W. *e
 
 [More information to follow]
 
+#### Data
+Summary statistics of all models for the discovery, replication, and combined meta-analyses are available through Zenodo: 
+
+[![DOI](https://zenodo.org/badge/1344910.svg)](https://zenodo.org/badge/latestdoi/1344910)
 
 #### Notes
 Scripts will work within the context of a certain Linux environment, for example a CentOS7 system on a SUN Grid Engine background or macOS X Lion+ (version 10.7.[x]+). 
