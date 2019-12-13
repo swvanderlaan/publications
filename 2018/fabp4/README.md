@@ -18,7 +18,8 @@ This readme accompanies the paper "_A functional locus at 8q21.13 associated to 
 #### Data
 Summary statistics of all models for the discovery, replication, and combined meta-analyses are available through Zenodo: 
 
-[![DOI](https://zenodo.org/badge/1344910.svg)](https://zenodo.org/badge/latestdoi/1344910)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1344910.svg)](https://doi.org/10.5281/zenodo.1344910)
+
 
 #### Notes
 Scripts will work within the context of a certain Linux environment, for example a CentOS7 system on a SUN Grid Engine background or macOS X Lion+ (version 10.7.[x]+). 
