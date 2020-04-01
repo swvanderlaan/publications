@@ -2,7 +2,7 @@ Family history and polygenic risk of cardiovascular disease: independent factors
 ===========================================================
 
 #### This readme
-This readme accompanies the paper "Family history and polygenic risk of cardiovascular disease: independent factors associated with secondary cardiovascular manifestations in patients undergoing carotid endarterectomy." by Timmerman N. and [Timmerman N. *et al*. **bioRxiv**](https://doi.org/10.1101/19006718){target="_blank"}.
+This readme accompanies the paper "Family history and polygenic risk of cardiovascular disease: independent factors associated with secondary cardiovascular manifestations in patients undergoing carotid endarterectomy." by Timmerman N. and [Timmerman N. *et al*. **bioRxiv**](https://doi.org/10.1101/19006718).
 
 --------------
 
@@ -10,7 +10,7 @@ This readme accompanies the paper "Family history and polygenic risk of cardiova
 
 **Background** Family history (FHx) of cardiovascular disease (CVD) is a risk factor for CVD and a proxy for cardiovascular heritability. Polygenic risk scores (PRS) summarizing >1 million variants for coronary artery disease (CAD) are associated with incident and recurrent CAD events. However, little is known about the influence of FHx or PRS on secondary cardiovascular events (sCVE) in patients undergoing carotid endarterectomy (CEA). 
 
-**Methods** We included 1,788 CEA patients from the Athero-Express Biobank ([www.atheroexpress.nl](http://www.atheroexpress.nl){target="_blank"}). A weighted PRS for CAD including 1.7 million variants was calculated (MetaGRS). The composite endpoint of sCVE during three years follow-up included coronary, cerebrovascular and peripheral events and cardiovascular death. We assessed the impact of FHx and MetaGRS on sCVE and carotid plaque composition. 
+**Methods** We included 1,788 CEA patients from the Athero-Express Biobank ([www.atheroexpress.nl](http://www.atheroexpress.nl)). A weighted PRS for CAD including 1.7 million variants was calculated (MetaGRS). The composite endpoint of sCVE during three years follow-up included coronary, cerebrovascular and peripheral events and cardiovascular death. We assessed the impact of FHx and MetaGRS on sCVE and carotid plaque composition. 
 
 **Results** Positive FHx was associated with a higher 3-year risk of sCVE independent of cardiovascular risk factors and MetaGRS (adjusted HR 1.40, 95%CI 1.07-1.82, p=0.013). Patients in the highest MetaGRS quintile had a higher 3-year risk of sCVE compared to the rest of the cohort independent of cardiovascular risk factors including FHx (adjusted HR 1.35, 95%CI 1.01-1.79, p=0.043), and their atherosclerotic plaques contained more fat (adjusted OR 1.59, 95%CI, 1.11-2.29, p=0.013) and more macrophages (OR 1.49, 95%CI 1.12-1.99, p=0.006). 
 
@@ -54,7 +54,7 @@ Surely these scripts will not work immediately on your systems, but they may be 
 This script was made during the revision to extract only the 1.7 million variants from the MetaGRS and calculate summary statistics of all variants in the AEGS dataset.
 
 - *[prsice.fhx.metagrs.sh](prsice.fhx.metagrs.sh)*</br>
-This script was used to calculate the MetaGRS in the Athero-Express Biobank Study using [PRSice-2](http://www.prsice.info){target="_blank"}[^1].
+This script was used to calculate the MetaGRS in the Athero-Express Biobank Study using [PRSice-2](http://www.prsice.info)[^1].
 
 - *[syntax.sas]()*</br>
 This SPSS syntax was used for overal analyses.
@@ -65,7 +65,7 @@ Scripts will work within the context of a certain Linux environment, for example
 
 
 #### References
-[^1] Choi SW, and O’Reilly PF. "PRSice-2: Polygenic Risk Score Software for Biobank-Scale Data." **GigaScience** 8, no. 7 (July 1, 2019). [https://doi.org/10.1093/gigascience/giz082](https://doi.org/10.1093/gigascience/giz082){target="_blank"}.
+[^1] Choi SW, and O’Reilly PF. "PRSice-2: Polygenic Risk Score Software for Biobank-Scale Data." **GigaScience** 8, no. 7 (July 1, 2019). [https://doi.org/10.1093/gigascience/giz082](https://doi.org/10.1093/gigascience/giz082).
 
 --------------
 

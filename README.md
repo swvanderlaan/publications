@@ -23,14 +23,14 @@ Scripts will work within the context of a certain Linux environment, for example
 
 Here we calculated a polygenic risk score for coronary artery disease based on the MetaGRS described in [Inouye M. *et al.*](http://www.onlinejacc.org/content/72/16/1883){target="_blank"}, and correlated this with family history (FHx) of cardiovascular disease, secondary major adverse clinical events after carotid endarterectomy, and atherosclerotic plaque characteristics.
 
-Link to the publication: [Timmerman N. *et al.*](https://www.medrxiv.org/content/10.1101/19006718v2){target="_blank"}.
+Link to the publication: [Timmerman N. *et al.*](https://www.medrxiv.org/content/10.1101/19006718v2).
 
 
 ### [Common variants in OSMR contribute to carotid plaque vulnerability](2019/oncostatin)
 
 In this study we studied the effects of *OSMR* on plaque composition in the Athero-Express Biobank Study.
 
-Link to the publication: [Van Keulen D. *et al.*](https://www.biorxiv.org/content/10.1101/576793v1){target="_blank"}.
+Link to the publication: [Van Keulen D. *et al.*](https://www.biorxiv.org/content/10.1101/576793v1).
 
 
 ## 2018

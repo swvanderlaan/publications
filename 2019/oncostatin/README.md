@@ -2,7 +2,7 @@ Common variats in OSMR contribute to carotid plaque vulnerability
 ===========================================================
 
 #### This readme
-This readme accompanies the paper "Common variats in OSMR contribute to carotid plaque vulnerability." by Van Keulen D. and [Van Keulen D. *et al*. **bioRxiv**](https://doi.org/10.1101/576793){target="_blank"}.
+This readme accompanies the paper "Common variats in OSMR contribute to carotid plaque vulnerability." by Van Keulen D. and [Van Keulen D. *et al*. **bioRxiv**](https://doi.org/10.1101/576793).
 
 --------------
 
