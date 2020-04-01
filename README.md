@@ -9,13 +9,29 @@ It is my sincere intend to be as open and forthcoming as I can be, and therefore
 This repositories contains scripts organized in folders for published projects (as of August 30, 2016). All scripts are annotated for debugging purposes - and future reference. Therefore, most scripts will be self-explanatory and this page only serves as a table of contents.
 
 #### EGA
-All (raw) genotype and methylation data will be made available through EGA. When the EGA-identifiers are known, I will put them here.
+All (raw) genotype and methylation data will be made available through EGA. However, this is a work in progress and takes time. When the EGA-identifiers are known, I will put them here.
 
 #### Notes
 Scripts will work within the context of a certain Linux environment, for example a CentOS7 system on a SUN Grid Engine background or macOS X Lion+ (version 10.7.[x]+). 
 
 
 --------------
+
+## 2019
+
+### [Family history and polygenic risk of cardiovascular disease: independent factors associated with secondary cardiovascular manifestations in patients undergoing carotid endarterectomy](2019/fhx)
+
+Here we calculated a polygenic risk score for coronary artery disease based on the MetaGRS described in [Inouye M. *et al.*](http://www.onlinejacc.org/content/72/16/1883){target="_blank"}, and correlated this with family history (FHx) of cardiovascular disease, secondary major adverse clinical events after carotid endarterectomy, and atherosclerotic plaque characteristics.
+
+Link to the publication: [Timmerman N. *et al.*](https://www.medrxiv.org/content/10.1101/19006718v2){target="_blank"}.
+
+
+### [Common variants in OSMR contribute to carotid plaque vulnerability](2019/oncostatin)
+
+In this study we studied the effects of *OSMR* on plaque composition in the Athero-Express Biobank Study.
+
+Link to the publication: [Van Keulen D. *et al.*](https://www.biorxiv.org/content/10.1101/576793v1){target="_blank"}.
+
 
 ## 2018
 

@@ -2,16 +2,20 @@ Common variats in OSMR contribute to carotid plaque vulnerability
 ===========================================================
 
 #### This readme
-This readme accompanies the paper "Common variats in OSMR contribute to carotid plaque vulnerability." by Van Keulen D. and [Van Keulen D. *et al*. **bioRxiv**](){target="_blank"}.
+This readme accompanies the paper "Common variats in OSMR contribute to carotid plaque vulnerability." by Van Keulen D. and [Van Keulen D. *et al*. **bioRxiv**](https://doi.org/10.1101/576793){target="_blank"}.
+
+--------------
 
 #### Abstract
-**Background:** Tobacco smoking is a major risk factor for atherosclerotic disease and has been associated with DNA methylation (DNAm) changes in blood cells. However, whether smoking influences DNAm in the diseased vascular wall is unknown but may prove crucial in understanding the pathophysiology of atherosclerosis. In the this study we associated current tobacco smoking to epigenome-wide DNAm in atherosclerotic plaques from patients undergoing carotid endarterectomy (CEA).
 
-**Methods:** DNAm at commonly methylated sites (CpGs) was assessed in atherosclerotic plaque samples and peripheral blood samples from 485 CEA patients. We tested the association of current tobacco smoking with DNAm corrected for age, and sex. To control for bias and inflation due to cellular heterogeneity we applied a Bayesian method to estimate an empirical null distribution as implemented by the R package bacon. Replication of the smoking associated methylated CpGs in atherosclerotic plaques was executed in a second sample of 190 CEA patients, and results were meta-analyzed using a fixed-effects model. 
+**Background** Oncostatin M (OSM) signaling is implicated in atherosclerosis, however the mechanism remains unclear. We investigated the impact of common genetic variants in _OSM_ and its receptors, _OSMR_ and _LIFR_, on overall plaque vulnerability (based on macrophage, collagen, smooth muscle cell and fat content) and on seven individual atherosclerotic plaque phenotypes (calcification, collagen, atheroma size, macrophages, smooth muscle cells, vessel density and intraplaque hemorrhage).
 
-**Results:** Tobacco smoking was significantly associated to differential DNAm in atherosclerotic lesions of 4 CpGs (FDR < 0.05) mapped to 2 different genes (_AHRR_, _ITPK1_), and 17 CpGs mapped to 8 genes and RNAs in blood. The strongest associations were found for CpGs mapped to the gene _AHRR_, a repressor of the aryl hydrocarbon receptor transcription factor involved in xenobiotic detoxification. One of these methylated CpGs were found to be regulated by local genetic variation.
+**Methods and results** We queried Genotype-Tissue Expression (GTEx) data and selected one variant, rs13168867 (C allele), that associated with decreased _OSMR_ expression and one variant, rs10491509 (A allele), that associated with increased _LIFR_ expression in arterial tissue. No variant was associated to significantly altered _OSM_ expression.
 
-**Conclusions:** The risk factor tobacco smoking associates with DNA methylation at multiple loci in carotid atherosclerotic lesions. These observations support further investigation of the relationship between risk factors and epigenetic regulation in atherosclerotic disease.
+We associated these two variants with plaque characteristics from 1,443 genotyped carotid endarterectomy patients in the Athero-Express Biobank Study. The rs13168867 variant in _OSMR_ was significantly associated with an increased overall plaque vulnerability (β = 0.118 ± s.e. = 0.040, p = 3.00×2−3, C allele). With respect to different plaque phenotypes, this variant showed strongest associations with intraplaque fat (β = 0.248 ± s.e. = 0.088, p = 4.66×2−3, C allele) and collagen content (β = −0.259 ± s.e. = 0.095, p = 6.22×2−3, C allele). No associations were found for rs10491509 in the _LIFR_ locus.
+
+**Conclusion** Our study suggests that genetically decreased arterial _OSMR_ expression, possibly resulting in decreased OSM signaling, contributes to increased carotid plaque vulnerability.
+
 
 #### Quality Control
 [text]
@@ -21,6 +25,8 @@ This readme accompanies the paper "Common variats in OSMR contribute to carotid 
 - *somescript.R*</br>
 [text]
 
+
+prsice.fhx.metagrs.sh
 
 #### Analysis Scripts
 Surely these scripts will not work immediately on your systems, but they may be used and edited for local use.
