@@ -17,26 +17,16 @@ We associated these two variants with plaque characteristics from 1,443 genotype
 **Conclusion** Our study suggests that genetically decreased arterial _OSMR_ expression, possibly resulting in decreased OSM signaling, contributes to increased carotid plaque vulnerability.
 
 
-#### Quality Control
-[text]
-
-- *somescript.sh*</br>
-[text]
-- *somescript.R*</br>
-[text]
-
-
-prsice.fhx.metagrs.sh
-
 #### Analysis Scripts
 Surely these scripts will not work immediately on your systems, but they may be used and edited for local use.
  
 - *somescript.R*</br>
 [text]
-- *somescript.R*</br>
+- *somescript.sh*</br>
 [text]
 - *somescript.pl*</br>
 [text]
+
 
 #### Notes
 Scripts will work within the context of a certain Linux environment, for example a CentOS7 system on a SUN Grid Engine background or macOS X Lion+ (version 10.7.[x]+). 

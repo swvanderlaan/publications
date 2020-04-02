@@ -6,10 +6,10 @@ Publications
 It is my sincere intend to be as open and forthcoming as I can be, and therefore to do my utmost best to share my scripts whenever is possible. 
 
 #### This repository
-This repositories contains scripts organized in folders for published projects (as of August 30, 2016). All scripts are annotated for debugging purposes - and future reference. Therefore, most scripts will be self-explanatory and this page only serves as a table of contents.
+This repositories contains scripts organized in folders for published projects (as of August 30, 2016). All scripts are annotated (to some extend) for debugging purposes - and future reference. Therefore, most scripts will be self-explanatory and this page only serves as a table of contents.
 
 #### EGA
-All (raw) genotype and methylation data will be made available through EGA. However, this is a work in progress and takes time. When the EGA-identifiers are known, I will put them here.
+All (raw) genotype and methylation data will be made available through EGA at some point in time. We are actively pursuiting this, but it takes time; watch this space. When the EGA-identifiers are known, I will put them here.
 
 #### Notes
 Scripts will work within the context of a certain Linux environment, for example a CentOS7 system on a SUN Grid Engine background or macOS X Lion+ (version 10.7.[x]+). 
@@ -32,6 +32,8 @@ In this study we studied the effects of *OSMR* on plaque composition in the Athe
 
 Link to the publication: [Van Keulen D. *et al.*](https://www.biorxiv.org/content/10.1101/576793v1).
 
+
+--------------
 
 ## 2018
 
