@@ -6,7 +6,7 @@ Publications
 It is my sincere intend to be as open and forthcoming as I can be, and therefore to do my utmost best to share my scripts whenever is possible. 
 
 #### This repository
-This repositories contains scripts organized in folders for published projects (as of August 30, 2016). All scripts are annotated (to some extend) for debugging purposes - and future reference. Therefore, most scripts will be self-explanatory and this page only serves as a table of contents.
+This repositories contains scripts organized in folders for ongoing projects, once published a stand-alone repository will be made and linked here (as of August 30, 2016). All scripts are annotated (to some extend) for debugging purposes - and future reference. Therefore, most scripts will be self-explanatory and this page only serves as a table of contents.
 
 #### EGA
 All (raw) genotype and methylation data will be made available through EGA at some point in time. We are actively pursuiting this, but it takes time; watch this space. When the EGA-identifiers are known, I will put them here.
@@ -19,7 +19,7 @@ Scripts will work within the context of a certain Linux environment, for example
 
 ## 2019
 
-### [Family history and polygenic risk of cardiovascular disease: independent factors associated with secondary cardiovascular manifestations in patients undergoing carotid endarterectomy](2019/timmerman_n_fhx_prs_cad)
+### [Family history and polygenic risk of cardiovascular disease: independent factors associated with secondary cardiovascular manifestations in patients undergoing carotid endarterectomy](https://github.com/swvanderlaan/2020_pid_timmerman_n_fhx_prs_cad)
 
 Here we calculated a polygenic risk score for coronary artery disease based on the MetaGRS described in [Inouye M. *et al.*](http://www.onlinejacc.org/content/72/16/1883){target="_blank"}, and correlated this with family history (FHx) of cardiovascular disease, secondary major adverse clinical events after carotid endarterectomy, and atherosclerotic plaque characteristics.
 
