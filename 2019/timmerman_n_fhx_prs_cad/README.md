@@ -56,7 +56,7 @@ This script was made during the revision to extract only the 1.7 million variant
 - *[prsice.fhx.metagrs.sh](prsice.fhx.metagrs.sh)*</br>
 This script was used to calculate the MetaGRS in the Athero-Express Biobank Study using [PRSice-2](http://www.prsice.info)[^1].
 
-- *[syntax.sas]()*</br>
+- *[20190512_MetaGRS_FHx_fullanalyses.sps]()*</br>
 This SPSS syntax was used for overal analyses.
 
 

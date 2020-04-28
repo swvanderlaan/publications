@@ -19,14 +19,14 @@ Scripts will work within the context of a certain Linux environment, for example
 
 ## 2019
 
-### [Family history and polygenic risk of cardiovascular disease: independent factors associated with secondary cardiovascular manifestations in patients undergoing carotid endarterectomy](2019/fhx)
+### [Family history and polygenic risk of cardiovascular disease: independent factors associated with secondary cardiovascular manifestations in patients undergoing carotid endarterectomy](2019/timmerman_n_fhx_prs_cad)
 
 Here we calculated a polygenic risk score for coronary artery disease based on the MetaGRS described in [Inouye M. *et al.*](http://www.onlinejacc.org/content/72/16/1883){target="_blank"}, and correlated this with family history (FHx) of cardiovascular disease, secondary major adverse clinical events after carotid endarterectomy, and atherosclerotic plaque characteristics.
 
 Link to the publication: [Timmerman N. *et al.*](https://www.medrxiv.org/content/10.1101/19006718v2).
 
 
-### [Common variants in OSMR contribute to carotid plaque vulnerability](2019/oncostatin)
+### [Common variants in OSMR contribute to carotid plaque vulnerability](2019/vankeulen_d_oncostatin)
 
 In this study we studied the effects of *OSMR* on plaque composition in the Athero-Express Biobank Study.
 
