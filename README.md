@@ -59,7 +59,7 @@ Link to the publication:.
 
 ## 2017
 
-### [Smoking is associated to DNA methylation in atherosclerotic carotid lesions.](2017/smoking_ewas/)
+### [Smoking is associated to DNA methylation in atherosclerotic carotid lesions.](https://github.com/swvanderlaan/2018_circgenomprecismed_30354327_siemelink_m_smoking_ewas)
 
 For this study we performed an **E**pigenome-**W**ide **A**ssociation **S**tudy (EWAS) of DNA derived from whole-blood and carotid plaques.
 
@@ -77,7 +77,7 @@ Link to the publication: [_Circ Genom Precis Med._ 2018;11:e002115](https://www.
 
 ## 2016
 
-### [Cystatin C and Cardiovascular Disease: A Mendelian Randomization Study.](2016/cystatin_c_power/)
+### [Cystatin C and Cardiovascular Disease: A Mendelian Randomization Study.](https://github.com/swvanderlaan/2016_jacc_27561768_vanderlaan_sw_cystatinc)
 
 The aim of this study was to use Mendelian randomization to investigate whether cystatin C is causally related to CVD in the general population. We published this in [JACC](https://www.ncbi.nlm.nih.gov/pubmed/?term=27561768).
 
