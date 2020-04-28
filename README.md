@@ -66,7 +66,7 @@ For this study we performed an **E**pigenome-**W**ide **A**ssociation **S**tudy 
 Link to the publication: [_Circ Genom Precis Med._ 2018;11:e002030](https://www.ahajournals.org/doi/full/10.1161/CIRCGEN.117.002030).
 
 
-### [CVD loci](2017/cvd_loci)
+### [CVD loci](https://github.com/swvanderlaan/2018_circgenomprecmed_30354329_van_der_laan_sw_cvd_loci)
 
 For this I used mainly [GWASToolKit](https://github.com/swvanderlaan/GWASToolKit). Some additional useful scripts I used are found in the [HerculesToolKit](https://github.com/swvanderlaan/HerculesToolKit). The polygenic (risk) scores were made with a script we (Jessica van Setten and I) had gotten via Eli Stahl. All (raw) genotype data will be made available soon via EGA; a link is supplied above.
 
