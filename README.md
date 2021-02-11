@@ -17,20 +17,31 @@ Scripts will work within the context of a certain Linux environment, for example
 
 --------------
 
-## 2019
+## 2020
 
-### [Family history and polygenic risk of cardiovascular disease: independent factors associated with secondary cardiovascular manifestations in patients undergoing carotid endarterectomy](https://github.com/swvanderlaan/2020_pid_timmerman_n_fhx_prs_cad)
+### [Family history and polygenic risk of cardiovascular disease: independent factors associated with secondary cardiovascular manifestations in patients undergoing carotid endarterectomy](https://github.com/swvanderlaan/2020_n_timmerman_n_fhx_prs_cad)
 
 Here we calculated a polygenic risk score for coronary artery disease based on the MetaGRS described in [Inouye M. *et al.*](http://www.onlinejacc.org/content/72/16/1883){target="_blank"}, and correlated this with family history (FHx) of cardiovascular disease, secondary major adverse clinical events after carotid endarterectomy, and atherosclerotic plaque characteristics.
 
-Link to the publication: [Timmerman N. *et al.*](https://www.medrxiv.org/content/10.1101/19006718v2).
+Link to the publication: [Timmerman N. _et al._ **Atherosclerosis**](https://doi.org/10.1016/j.atherosclerosis.2020.04.013).
 
 
-### [Common variants in OSMR contribute to carotid plaque vulnerability](2019/vankeulen_d_oncostatin)
+--------------
+
+## 2019
+
+### [Polygenic Susceptibility of Aortic Aneurysms Associates to the Diameter of the Aneurysm Sac: The Aneurysm-Express Biobank Cohort](https://github.com/swvanderlaan/2019_scirep_31882626_vanlaarhoven_c_aaa_lookup)
+
+In this study we studied the effects of AAA susceptibility loci on the diameter of the aneurysm sac in the Aneurysm-Express Biobank Study.
+
+Link to the publication: [Van Laarhoven C.J.H.C.M. _et al._ **Sci Rep 2019**](https://doi.org/10.1038/s41598-019-56230-3).
+
+
+### [Common variants in OSMR contribute to carotid plaque vulnerability](https://github.com/swvanderlaan/2019_vankeulen_d_osmr)
 
 In this study we studied the effects of *OSMR* on plaque composition in the Athero-Express Biobank Study.
 
-Link to the publication: [Van Keulen D. *et al.*](https://www.biorxiv.org/content/10.1101/576793v1).
+Link to the publication: [Van Keulen D. _et al._ **bioRxiv**](https://www.biorxiv.org/content/10.1101/576793v1).
 
 
 --------------
